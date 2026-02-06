@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+  
+    {
+      "name": "com.chronex.app",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "com.chronex.app (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "com.chronex.app (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}

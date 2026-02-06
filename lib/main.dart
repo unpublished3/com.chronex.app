@@ -1,5 +1,5 @@
 import 'package:chronex/base/theme/app_theme.dart';
-import 'package:chronex/navigation/app_router_path.dart';
+import 'package:chronex/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       minTextAdapt: true,
       designSize: const Size(412, 927),
-      splitScreenMode: true,
+      splitScreenMode: false,
       builder: (context, child) {
         return MaterialApp.router(
           debugShowMaterialGrid: false,
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           title: "Chronex",
           routerConfig: appRouter,
           theme: AppTheme.lightTheme(context),
-          themeMode: ThemeMode.dark,
+          themeMode: ThemeMode.light,
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
             return MediaQuery(
