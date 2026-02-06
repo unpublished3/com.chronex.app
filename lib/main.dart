@@ -2,14 +2,14 @@ import 'package:chronex/base/theme/app_theme.dart';
 import 'package:chronex/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
