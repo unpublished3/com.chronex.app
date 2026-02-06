@@ -12,16 +12,14 @@ class BluetoothState {
   BluetoothState({required this.adapterState, required this.isScanning});
 
   BluetoothState copyWith({BluetoothAdapterState? adapterState, bool? isScanning}) {
-    return BluetoothState(
-      adapterState: adapterState ?? this.adapterState,
-      isScanning: isScanning ?? this.isScanning,
-    );
+    return BluetoothState(adapterState: adapterState ?? this.adapterState, isScanning: isScanning ?? this.isScanning);
   }
 }
 
 class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   StreamSubscription<BluetoothAdapterState>? _subscription;
   StreamSubscription? _scanSub;
+  StreamSubscription<List<ScanResult>>? scanSubscription;
 
   @override
   Future<BluetoothState> build() async {
@@ -38,8 +36,17 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
       }
 
       _scanSub = FlutterBluePlus.isScanning.listen((scanning) {
-        state = AsyncData(state.value?.copyWith(isScanning: scanning) ?? BluetoothState(adapterState: state.value?.adapterState ?? BluetoothAdapterState.unknown, isScanning: scanning));
+        state = AsyncData(
+          state.value?.copyWith(isScanning: scanning) ??
+              BluetoothState(adapterState: state.value?.adapterState ?? BluetoothAdapterState.unknown, isScanning: scanning),
+        );
       });
+
+      // scanSubscription = FlutterBluePlus.scanResults.listen((res) async {
+      //   for (ScanResult r in res) {
+      //     print("Blue device: ${r}");
+      //   }
+      // });
     });
 
     ref.onDispose(() {
@@ -75,8 +82,12 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   Future<void> startScanning() async {
     await FlutterBluePlus.adapterState.where((s) => s == BluetoothAdapterState.on).first;
 
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
+    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15), withNames: ["Chronex"]);
   }
 }
 
 final bluetoothProvider = AsyncNotifierProvider<BluetoothNotifier, BluetoothState>(BluetoothNotifier.new);
+
+final scanResultsProvider = StreamProvider.autoDispose<List<ScanResult>>((ref) {
+  return FlutterBluePlus.scanResults;
+});

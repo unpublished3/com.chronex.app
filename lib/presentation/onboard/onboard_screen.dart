@@ -1,3 +1,4 @@
+import 'package:chronex/base/extensions/sizedbox_extension.dart';
 import 'package:chronex/presentation/provider/bluetooth_provider.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,31 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
+            ref
+                .watch(scanResultsProvider)
+                .when(
+                  data: (res) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: res.length,
+                      itemBuilder: (context, index) {
+                        final device = res[index].device;
+                        return ListTile(
+                          title: Text(device.platformName.isNotEmpty ? device.platformName : "Unknown Device"),
+                          subtitle: Text(device.remoteId.str),
+                          trailing: Text("RSSI: ${res[index].rssi}"),
+                        );
+                      },
+                    );
+                  },
+                  error: (e, _) {
+                    return Center(child: Text("Error: $e"));
+                  },
+                  loading: () {
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+            24.sBHh,
             Center(
               child: AppButton(
                 isLoading: ref.watch(bluetoothProvider).value?.isScanning ?? false,
