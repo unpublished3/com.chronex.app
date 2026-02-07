@@ -33,6 +33,7 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   StreamSubscription? _scanSub;
   StreamSubscription<List<ScanResult>>? scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSub;
+  bool? _supported;
 
   @override
   Future<BluetoothState> build() async {
@@ -63,8 +64,10 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   }
 
   Future<void> _checkBluetoothSupport() async {
-    if (!await FlutterBluePlus.isSupported) {
-      throw Exception("Bluetooth is not supported on this device.");
+    _supported ??= await FlutterBluePlus.isSupported;
+
+    if (!_supported!) {
+      throw Exception("Bluetooth not supported");
     }
   }
 
@@ -85,6 +88,7 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   }
 
   Future<void> startScanning() async {
+    if (FlutterBluePlus.isScanningNow) return;
     await FlutterBluePlus.adapterState.where((s) => s == BluetoothAdapterState.on).first;
 
     await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15), withNames: ["Chronex"]);
@@ -94,7 +98,7 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
     if (FlutterBluePlus.isScanningNow) {
       await FlutterBluePlus.stopScan();
     }
-    
+
     if (state.value?.connectionState == BluetoothConnectionState.connected) {
       return;
     }
@@ -119,6 +123,6 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
 
 final bluetoothProvider = AsyncNotifierProvider<BluetoothNotifier, BluetoothState>(BluetoothNotifier.new);
 
-final scanResultsProvider = StreamProvider.autoDispose<List<ScanResult>>((ref) {
+final scanResultsProvider = StreamProvider<List<ScanResult>>((ref) {
   return FlutterBluePlus.scanResults;
 });
