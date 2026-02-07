@@ -7,12 +7,24 @@ import 'package:permission_handler/permission_handler.dart';
 
 class BluetoothState {
   final BluetoothAdapterState adapterState;
+  final BluetoothDevice? connectedDevice;
   final bool isScanning;
+  final BluetoothConnectionState? connectionState;
 
-  BluetoothState({required this.adapterState, required this.isScanning});
+  BluetoothState({required this.adapterState, this.connectedDevice, required this.isScanning, this.connectionState});
 
-  BluetoothState copyWith({BluetoothAdapterState? adapterState, bool? isScanning}) {
-    return BluetoothState(adapterState: adapterState ?? this.adapterState, isScanning: isScanning ?? this.isScanning);
+  BluetoothState copyWith({
+    BluetoothAdapterState? adapterState,
+    BluetoothDevice? connectedDevice,
+    bool? isScanning,
+    BluetoothConnectionState? connectionState,
+  }) {
+    return BluetoothState(
+      adapterState: adapterState ?? this.adapterState,
+      connectedDevice: connectedDevice ?? this.connectedDevice,
+      isScanning: isScanning ?? this.isScanning,
+      connectionState: connectionState ?? this.connectionState,
+    );
   }
 }
 
@@ -20,41 +32,34 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   StreamSubscription<BluetoothAdapterState>? _subscription;
   StreamSubscription? _scanSub;
   StreamSubscription<List<ScanResult>>? scanSubscription;
+  StreamSubscription<BluetoothConnectionState>? _connectionSub;
 
   @override
   Future<BluetoothState> build() async {
     await _checkBluetoothSupport();
     await _requestBluetoothPermissions();
 
+    final adapter = await FlutterBluePlus.adapterState.first;
+
     _subscription = FlutterBluePlus.adapterState.listen((sub) async {
       state = AsyncData(state.value?.copyWith(adapterState: sub) ?? BluetoothState(adapterState: sub, isScanning: false));
 
-      if (sub == BluetoothAdapterState.off) {
-        if (Platform.isAndroid) {
-          await FlutterBluePlus.turnOn();
-        }
+      if (sub == BluetoothAdapterState.off && Platform.isAndroid) {
+        await FlutterBluePlus.turnOn();
       }
+    });
 
-      _scanSub = FlutterBluePlus.isScanning.listen((scanning) {
-        state = AsyncData(
-          state.value?.copyWith(isScanning: scanning) ??
-              BluetoothState(adapterState: state.value?.adapterState ?? BluetoothAdapterState.unknown, isScanning: scanning),
-        );
-      });
-
-      // scanSubscription = FlutterBluePlus.scanResults.listen((res) async {
-      //   for (ScanResult r in res) {
-      //     print("Blue device: ${r}");
-      //   }
-      // });
+    _scanSub = FlutterBluePlus.isScanning.listen((scanning) {
+      state = AsyncData(state.value!.copyWith(isScanning: scanning));
     });
 
     ref.onDispose(() {
       _subscription?.cancel();
       _scanSub?.cancel();
+      _connectionSub?.cancel();
     });
 
-    return BluetoothState(adapterState: await FlutterBluePlus.adapterState.first, isScanning: false);
+    return BluetoothState(adapterState: adapter, isScanning: FlutterBluePlus.isScanningNow);
   }
 
   Future<void> _checkBluetoothSupport() async {
@@ -83,6 +88,32 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
     await FlutterBluePlus.adapterState.where((s) => s == BluetoothAdapterState.on).first;
 
     await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15), withNames: ["Chronex"]);
+  }
+
+  Future<void> connectToDevice(BluetoothDevice device) async {
+    if (FlutterBluePlus.isScanningNow) {
+      await FlutterBluePlus.stopScan();
+    }
+    
+    if (state.value?.connectionState == BluetoothConnectionState.connected) {
+      return;
+    }
+
+    try {
+      await device.connect(license: License.free, timeout: const Duration(seconds: 15));
+
+      _connectionSub?.cancel();
+
+      _connectionSub = device.connectionState.listen((connectionState) {
+        state = AsyncData(
+          state.value!.copyWith(connectedDevice: connectionState == BluetoothConnectionState.connected ? device : null, connectionState: connectionState),
+        );
+      });
+    } catch (e) {
+      state = AsyncData(state.value!.copyWith(connectionState: BluetoothConnectionState.disconnected));
+
+      rethrow;
+    }
   }
 }
 
