@@ -1,7 +1,5 @@
-import 'package:go_router/go_router.dart';
+class AppRouterPath {
+  static const String initial = '/';
 
-final appRouter = GoRouter(
-  routes: [
-    
-  ]
-);
+  static const String home = '/home';
+}
