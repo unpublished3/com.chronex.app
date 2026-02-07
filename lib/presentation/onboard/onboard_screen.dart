@@ -1,11 +1,13 @@
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
 import 'package:chronex/base/utils/utils.dart';
+import 'package:chronex/navigation/app_router_path.dart';
 import 'package:chronex/presentation/provider/bluetooth_provider.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardScreen extends ConsumerStatefulWidget {
   const OnboardScreen({super.key});
@@ -22,6 +24,7 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
     ref.listen(bluetoothProvider, (previous, next) {
       if (next.value?.connectionState == BluetoothConnectionState.connected) {
         showSnackBar("Device connected successfully!");
+        context.push(AppRouterPath.home);
       } else if (next.value?.connectionState == BluetoothConnectionState.disconnected) {
         showSnackBar("Device disconnected.");
       }
