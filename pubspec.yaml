@@ -39,6 +39,7 @@ dependencies:
   flutter_blue_plus: ^2.1.0
   permission_handler: ^12.0.1
   flutter_riverpod: ^3.2.1
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -92,3 +93,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_assets:
+  assets_path:
+    - assets/svg/
+    - assets/png/
+  output_path: lib/base/resources/
+  filename: sapp_assets.dart
+  field_prefix:
+  classname: SAppAssets
