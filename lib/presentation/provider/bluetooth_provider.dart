@@ -7,23 +7,23 @@ import 'package:permission_handler/permission_handler.dart';
 
 class BluetoothState {
   final BluetoothAdapterState adapterState;
-  final BluetoothDevice? connectedDevice;
   final bool isScanning;
   final BluetoothConnectionState? connectionState;
+  final List<BluetoothService>? services;
 
-  BluetoothState({required this.adapterState, this.connectedDevice, required this.isScanning, this.connectionState});
+  BluetoothState({required this.adapterState, required this.isScanning, this.connectionState, this.services});
 
   BluetoothState copyWith({
     BluetoothAdapterState? adapterState,
-    BluetoothDevice? connectedDevice,
     bool? isScanning,
     BluetoothConnectionState? connectionState,
+    List<BluetoothService>? services,
   }) {
     return BluetoothState(
       adapterState: adapterState ?? this.adapterState,
-      connectedDevice: connectedDevice ?? this.connectedDevice,
       isScanning: isScanning ?? this.isScanning,
       connectionState: connectionState ?? this.connectionState,
+      services: services ?? this.services,
     );
   }
 }
@@ -31,9 +31,12 @@ class BluetoothState {
 class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
   StreamSubscription<BluetoothAdapterState>? _subscription;
   StreamSubscription? _scanSub;
-  StreamSubscription<List<ScanResult>>? scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSub;
+  BluetoothDevice? _device;
+  final Map<Guid, BluetoothCharacteristic> _charCache = {};
+
   bool? _supported;
+  bool _connecting = false;
 
   @override
   Future<BluetoothState> build() async {
@@ -103,21 +106,47 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
       return;
     }
 
+    if (_connecting) return;
+    _connecting = true;
+
     try {
       await device.connect(license: License.free, timeout: const Duration(seconds: 15));
 
       _connectionSub?.cancel();
 
       _connectionSub = device.connectionState.listen((connectionState) {
-        state = AsyncData(
-          state.value!.copyWith(connectedDevice: connectionState == BluetoothConnectionState.connected ? device : null, connectionState: connectionState),
-        );
+        _device = device;
+        state = AsyncData(state.value!.copyWith(connectionState: connectionState));
       });
+      if (Platform.isAndroid) await device.requestMtu(512);
     } catch (e) {
       state = AsyncData(state.value!.copyWith(connectionState: BluetoothConnectionState.disconnected));
 
       rethrow;
+    } finally {
+      _connecting = false;
     }
+  }
+
+  Future<void> disconnectFromDevice() async {
+    final device = _device;
+
+    if (device == null) return;
+
+    await device.disconnect();
+  }
+
+  Future<void> discoverServices() async {
+    final device = _device;
+    if (device == null) return;
+
+    final List<BluetoothService> services = await device.discoverServices();
+    for (final s in services) {
+      for (final c in s.characteristics) {
+        _charCache[c.uuid] = c;
+      }
+    }
+    state = AsyncData(state.value!.copyWith(services: services));
   }
 }
 

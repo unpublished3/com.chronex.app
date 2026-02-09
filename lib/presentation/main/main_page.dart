@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: widget.child,
