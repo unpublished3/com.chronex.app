@@ -1,49 +1,31 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:chronex/base/model/bluetooth_state.dart';
+import 'package:chronex/base/model/characteristic_data.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class BluetoothState {
-  final BluetoothAdapterState adapterState;
-  final BluetoothDevice? connectedDevice;
-  final bool isScanning;
-  final BluetoothConnectionState? connectionState;
-
-  BluetoothState({required this.adapterState, this.connectedDevice, required this.isScanning, this.connectionState});
-
-  BluetoothState copyWith({
-    BluetoothAdapterState? adapterState,
-    BluetoothDevice? connectedDevice,
-    bool? isScanning,
-    BluetoothConnectionState? connectionState,
-  }) {
-    return BluetoothState(
-      adapterState: adapterState ?? this.adapterState,
-      connectedDevice: connectedDevice ?? this.connectedDevice,
-      isScanning: isScanning ?? this.isScanning,
-      connectionState: connectionState ?? this.connectionState,
-    );
-  }
-}
-
-class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
+class BluetoothNotifier extends AsyncNotifier<BLEState> {
   StreamSubscription<BluetoothAdapterState>? _subscription;
   StreamSubscription? _scanSub;
-  StreamSubscription<List<ScanResult>>? scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSub;
+  BluetoothDevice? _device;
+  final Map<Guid, BluetoothCharacteristic> _charCache = {};
+
   bool? _supported;
+  bool _connecting = false;
 
   @override
-  Future<BluetoothState> build() async {
+  Future<BLEState> build() async {
     await _checkBluetoothSupport();
     await _requestBluetoothPermissions();
 
     final adapter = await FlutterBluePlus.adapterState.first;
 
     _subscription = FlutterBluePlus.adapterState.listen((sub) async {
-      state = AsyncData(state.value?.copyWith(adapterState: sub) ?? BluetoothState(adapterState: sub, isScanning: false));
+      state = AsyncData(state.value?.copyWith(adapterState: sub) ?? BLEState(adapterState: sub, isScanning: false));
 
       if (sub == BluetoothAdapterState.off && Platform.isAndroid) {
         await FlutterBluePlus.turnOn();
@@ -51,23 +33,27 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
     });
 
     _scanSub = FlutterBluePlus.isScanning.listen((scanning) {
-      state = AsyncData(state.value!.copyWith(isScanning: scanning));
+      final current = state.value;
+      if (current == null) return;
+
+      state = AsyncData(current.copyWith(isScanning: scanning));
     });
 
     ref.onDispose(() {
       _subscription?.cancel();
       _scanSub?.cancel();
       _connectionSub?.cancel();
+      disconnectFromDevice();
     });
 
-    return BluetoothState(adapterState: adapter, isScanning: FlutterBluePlus.isScanningNow);
+    return BLEState(adapterState: adapter, isScanning: FlutterBluePlus.isScanningNow);
   }
 
   Future<void> _checkBluetoothSupport() async {
     _supported ??= await FlutterBluePlus.isSupported;
 
     if (!_supported!) {
-      throw Exception("Bluetooth not supported");
+      // throw Exception("Bluetooth not supported");
     }
   }
 
@@ -103,26 +89,63 @@ class BluetoothNotifier extends AsyncNotifier<BluetoothState> {
       return;
     }
 
+    if (_connecting) return;
+    _connecting = true;
+
     try {
       await device.connect(license: License.free, timeout: const Duration(seconds: 15));
 
       _connectionSub?.cancel();
 
       _connectionSub = device.connectionState.listen((connectionState) {
-        state = AsyncData(
-          state.value!.copyWith(connectedDevice: connectionState == BluetoothConnectionState.connected ? device : null, connectionState: connectionState),
-        );
+        _device = device;
+        state = AsyncData(state.value!.copyWith(connectionState: connectionState));
       });
+      if (Platform.isAndroid) await device.requestMtu(512);
     } catch (e) {
       state = AsyncData(state.value!.copyWith(connectionState: BluetoothConnectionState.disconnected));
 
       rethrow;
+    } finally {
+      _connecting = false;
     }
   }
+
+  Future<void> disconnectFromDevice() async {
+    final device = _device;
+
+    if (device == null) return;
+
+    await device.disconnect();
+  }
+
+  Future<void> discoverServices() async {
+    final device = _device;
+    if (device == null) return;
+
+    final List<BluetoothService> services = await device.discoverServices();
+    for (final s in services) {
+      for (final c in s.characteristics) {
+        _charCache[c.uuid] = c;
+      }
+    }
+    state = AsyncData(state.value!.copyWith(services: services));
+  }
+
+  Stream<CharacteristicData> subscribeTo(Guid id) async* {
+  final char = _charCache[id];
+  if (char == null) return;
+
+  await char.setNotifyValue(true);
+
+  await for (final value in char.onValueReceived) {
+    yield CharacteristicData(uuid: char.uuid, value: value);
+  }
+}
 }
 
-final bluetoothProvider = AsyncNotifierProvider<BluetoothNotifier, BluetoothState>(BluetoothNotifier.new);
+final bluetoothProvider = AsyncNotifierProvider<BluetoothNotifier, BLEState>(BluetoothNotifier.new);
 
-final scanResultsProvider = StreamProvider<List<ScanResult>>((ref) {
+final scanResultsProvider = StreamProvider.autoDispose<List<ScanResult>>((ref) {
   return FlutterBluePlus.scanResults;
 });
