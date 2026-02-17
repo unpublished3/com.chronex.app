@@ -133,7 +133,7 @@ class FirstPageCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
             child: Text(
               body,
-              style: STextTheme.whiteText,
+              style: STextTheme.text18,
               textAlign: TextAlign.center,
             ),
           ),
