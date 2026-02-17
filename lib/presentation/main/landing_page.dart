@@ -74,6 +74,11 @@ class LandingPage extends StatelessWidget {
                 // Routing
               },
               title: 'Get Started',
+              color: Colors.grey.shade100,
+              titleColor: AppColor.primary,
+              width: 360.w,
+              height: 75.h,
+              fontSize: 20.0,
             ),
           ],
         ),
@@ -125,8 +130,12 @@ class FirstPageCard extends StatelessWidget {
           ),
           5.sBHh,
           Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-            child: Text(body, style: STextTheme.whiteText),
+            padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
+            child: Text(
+              body,
+              style: STextTheme.whiteText,
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),
