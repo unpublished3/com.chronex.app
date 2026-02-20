@@ -25,4 +25,15 @@ class STextTheme {
     fontWeight: FontWeight.w500,
     fontSize: 24,
   );
+  static TextStyle greentextprimary = greenText.copyWith(
+    color: AppColor.primary,
+  );
+  static TextStyle blacktitles = const TextStyle(
+    color: AppColor.black,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w500,
+    fontSize: 26,
+  );
+  static TextStyle blacktitles24 = blacktitles.copyWith(fontSize: 24);
+  static TextStyle blacktitles20 = blacktitles.copyWith(fontSize: 20);
 }
