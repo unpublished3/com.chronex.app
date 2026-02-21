@@ -10,14 +10,16 @@ class AppTheme {
       useMaterial3: true,
       appBarTheme: AppBarTheme(
         backgroundColor: AppColor.neutral50,
-        titleTextStyle: STextTheme.text16,
+        titleTextStyle: STextTheme.blacktext16,
         centerTitle: false,
         actionsPadding: EdgeInsets.only(right: 24.w),
         titleSpacing: 0,
         surfaceTintColor: Colors.transparent,
       ),
       checkboxTheme: CheckboxThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(4)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(4),
+        ),
         side: const BorderSide(width: 1, color: AppColor.neutral100),
         fillColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) return AppColor.primary;
@@ -26,15 +28,22 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColor.white,
-        selectedLabelStyle: STextTheme.text12,
-        unselectedLabelStyle: STextTheme.text12,
+        selectedLabelStyle: STextTheme.blacktext12,
+        unselectedLabelStyle: STextTheme.blacktext12,
         selectedItemColor: AppColor.primary,
       ),
-      bottomSheetTheme: const BottomSheetThemeData(backgroundColor: AppColor.white),
-      bottomAppBarTheme: const BottomAppBarThemeData(color: AppColor.white, elevation: 0),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColor.white,
+      ),
+      bottomAppBarTheme: const BottomAppBarThemeData(
+        color: AppColor.white,
+        elevation: 0,
+      ),
       dialogTheme: DialogThemeData(
         backgroundColor: AppColor.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(10),
+        ),
         insetPadding: EdgeInsets.all(20.sp),
       ),
       radioTheme: RadioThemeData(
@@ -51,17 +60,24 @@ class AppTheme {
       datePickerTheme: DatePickerThemeData(
         confirmButtonStyle: TextButton.styleFrom(
           foregroundColor: AppColor.primary,
-          textStyle: STextTheme.text14.copyWith(fontWeight: FontWeight.w600),
+          textStyle: STextTheme.blacktext14.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
         cancelButtonStyle: TextButton.styleFrom(
           foregroundColor: AppColor.neutral900,
-          textStyle: STextTheme.text14.copyWith(fontWeight: FontWeight.w400),
+          textStyle: STextTheme.blacktext14.copyWith(
+            fontWeight: FontWeight.w400,
+          ),
         ),
         // surfaceTintColor: AppColor.primary.withAlpha(10),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColor.neutral50,
-          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 10.h,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(color: AppColor.neutral100, width: 1.sp),
@@ -74,7 +90,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(color: AppColor.primary, width: 1.sp),
           ),
-          labelStyle: STextTheme.text14.copyWith(color: AppColor.neutral),
+          labelStyle: STextTheme.blacktext14.copyWith(color: AppColor.neutral),
         ),
         headerBackgroundColor: AppColor.primary,
         headerForegroundColor: AppColor.white,

@@ -26,8 +26,8 @@ class _RunTrackStatsState extends State<RunTrackStats> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 152.w,
-      height: 152.h,
+      width: 175.w,
+      height: 140.h,
       padding: const EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade100.withAlpha(42),
@@ -37,15 +37,14 @@ class _RunTrackStatsState extends State<RunTrackStats> {
         children: [
           5.sBHh,
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(widget.icon, color: AppColor.white),
-              6.sBWw,
-              Text(widget.title, style: STextTheme.greenText),
+              3.sBWw,
+              Text(widget.title, style: STextTheme.greentextlight),
             ],
           ),
-          Text(widget.value, style: STextTheme.text36),
-          Text(widget.unit, style: STextTheme.greenText),
+          Text(widget.value, style: STextTheme.whitetext36),
+          Text(widget.unit, style: STextTheme.greentextlight),
         ],
       ),
     );

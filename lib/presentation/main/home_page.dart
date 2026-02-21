@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widgetlist = [
-      const Home(name: 'Harry'),
+      const Home(name: 'Pratik'),
       const History(),
       const Profile(),
     ];
@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-          child: Text('Chronex', style: STextTheme.text26),
+          child: Text('Chronex', style: STextTheme.whitetext26),
         ),
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                       ),
                       child: Text(
                         'Welcome Back, ${widget.name}!',
-                        style: STextTheme.text26,
+                        style: STextTheme.whitetext26,
                       ),
                     ),
                   ),
@@ -113,7 +113,7 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Ready for your next Run?',
-                        style: STextTheme.text18,
+                        style: STextTheme.whitetext18,
                       ),
                     ),
                   ),
@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text('Your Stats', style: STextTheme.blacktitles),
+                child: Text('Your Stats', style: STextTheme.blacktext24),
               ),
             ),
             Row(
@@ -185,7 +185,7 @@ class _HomeState extends State<Home> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
-                  child: Text('Recent activity', style: STextTheme.blacktitles),
+                  child: Text('Recent activity', style: STextTheme.blacktext24),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
@@ -195,10 +195,7 @@ class _HomeState extends State<Home> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 10.0),
-                      child: Text(
-                        'View all',
-                        style: STextTheme.greentextprimary,
-                      ),
+                      child: Text('View all', style: STextTheme.greentext24),
                     ),
                   ),
                 ),
@@ -222,12 +219,87 @@ class _HomeState extends State<Home> {
   }
 }
 
-class History extends StatelessWidget {
+class History extends StatefulWidget {
   const History({super.key});
 
   @override
+  State<History> createState() => _HistoryState();
+}
+
+class _HistoryState extends State<History> {
+  int totalruns = 1;
+  DateTime now = DateTime.now();
+  String monthname = DateFormat('MMM').format(DateTime.now());
+  double recentdistance = 14.5;
+  Duration recenttime = const Duration(hours: 1, minutes: 30);
+  Duration recentpace = const Duration(minutes: 5, seconds: 25);
+  int recentheartbeat = 144;
+  @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('History page'));
+    return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+          child: Text('Chronex', style: STextTheme.whitetext26),
+        ),
+        backgroundColor: AppColor.primary,
+        toolbarHeight: 60.h,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(25.0),
+              height: 120.h,
+              width: 370.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: const Color.fromARGB(255, 197, 254, 198),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.directions_run,
+                          color: AppColor.primary,
+                          size: 25.0,
+                        ),
+                        5.sBHw,
+                        Text(
+                          'Total Runs: $totalruns',
+                          style: STextTheme.greentext24,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Keep up the great work! Every run counts.',
+                      style: STextTheme.greentext18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RecentRunStats(
+              monthname: monthname,
+              day: now.day,
+              year: now.year,
+              recentdistance: recentdistance,
+              recenttime:
+                  '${recenttime.inHours.toString().padLeft(2, '0')}:${recenttime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+              recentpace:
+                  '${recentpace.inMinutes.remainder(60).toString().padLeft(2, '0')}:${recentpace.inSeconds.remainder(60).toString().padLeft(2, '0')}',
+              recentheartbeat: recentheartbeat,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -274,7 +346,7 @@ class _HomePageStatsState extends State<HomePageStats> {
             child: Row(
               children: [
                 Icon(widget.icon, color: AppColor.primary, size: 25.0),
-                Text(widget.title, style: STextTheme.blacktitles20),
+                Text(widget.title, style: STextTheme.blacktext20),
               ],
             ),
           ),
@@ -284,11 +356,11 @@ class _HomePageStatsState extends State<HomePageStats> {
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 5.0, 0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(widget.value, style: STextTheme.blacktitles),
+                  child: Text(widget.value, style: STextTheme.blacktext24),
                 ),
               ),
               if (widget.unit != null)
-                Text(widget.unit ?? '', style: STextTheme.blacktitles),
+                Text(widget.unit ?? '', style: STextTheme.blacktext24),
             ],
           ),
         ],

@@ -120,7 +120,12 @@ class _AppTextFieldState extends State<AppTextField> {
           minLines: widget.minLines,
           maxLength: widget.maxLength,
           textCapitalization: widget.textCapitalization,
-          style: widget.style ?? STextTheme.text14.copyWith(fontWeight: FontWeight.w400, color: AppColor.black),
+          style:
+              widget.style ??
+              STextTheme.blacktext14.copyWith(
+                fontWeight: FontWeight.w400,
+                color: AppColor.black,
+              ),
           obscuringCharacter: widget.obscuringCharacter,
           decoration: InputDecoration(
             filled: true,
@@ -129,13 +134,22 @@ class _AppTextFieldState extends State<AppTextField> {
             labelText: widget.labelText,
             prefix: widget.prefix,
             prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.suffixIcon ?? (widget.showObscureTextToggle ? _buildObscureTextToggle() : null),
+            suffixIcon:
+                widget.suffixIcon ??
+                (widget.showObscureTextToggle
+                    ? _buildObscureTextToggle()
+                    : null),
             suffix: widget.suffix,
             fillColor: widget.fillColor,
-            contentPadding: widget.contentPadding ?? EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
+            contentPadding:
+                widget.contentPadding ??
+                EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
             errorText: widget.errorText,
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColor.neutral100.withValues(alpha: 0.8), width: 1.r),
+              borderSide: BorderSide(
+                color: AppColor.neutral100.withValues(alpha: 0.8),
+                width: 1.r,
+              ),
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r),
             ),
             border: OutlineInputBorder(
@@ -179,7 +193,12 @@ class _AppTextFieldState extends State<AppTextField> {
         minLines: widget.minLines,
         maxLength: widget.maxLength,
         textCapitalization: widget.textCapitalization,
-        style: widget.style ?? STextTheme.text14.copyWith(fontWeight: FontWeight.w500, color: AppColor.black),
+        style:
+            widget.style ??
+            STextTheme.blacktext14.copyWith(
+              fontWeight: FontWeight.w500,
+              color: AppColor.black,
+            ),
         obscuringCharacter: widget.obscuringCharacter,
         decoration: InputDecoration(
           filled: true,
@@ -188,13 +207,20 @@ class _AppTextFieldState extends State<AppTextField> {
           labelText: widget.labelText,
           prefix: widget.prefix,
           prefixIcon: widget.prefixIcon,
-          suffixIcon: widget.suffixIcon ?? (widget.showObscureTextToggle ? _buildObscureTextToggle() : null),
+          suffixIcon:
+              widget.suffixIcon ??
+              (widget.showObscureTextToggle ? _buildObscureTextToggle() : null),
           suffix: widget.suffix,
           fillColor: widget.fillColor,
-          contentPadding: widget.contentPadding ?? EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
+          contentPadding:
+              widget.contentPadding ??
+              EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
           errorText: widget.errorText,
           // errorStyle: errorStyle ?? STextTheme.caption1.copyWith(fontWeight: FontWeight.w400, color: AppColor.red500),
-          hintStyle: STextTheme.text14.copyWith(fontWeight: FontWeight.w400, color: AppColor.neutral),
+          hintStyle: STextTheme.blacktext14.copyWith(
+            fontWeight: FontWeight.w400,
+            color: AppColor.neutral,
+          ),
           // labelStyle: labelStyle ?? STextTheme.caption1.copyWith(fontWeight: FontWeight.w400, color: AppColor.gray400),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.neutral100, width: 1.r),
@@ -220,7 +246,9 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget? _buildObscureTextToggle() {
     return IconButton(
       icon: Icon(
-        _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+        _obscureText
+            ? Icons.visibility_off_outlined
+            : Icons.visibility_outlined,
         color: AppColor.neutral200,
         size: 20.w,
       ),
@@ -258,7 +286,7 @@ class LabelInputGroupWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: STextTheme.text14),
+        Text(label, style: STextTheme.blacktext14),
         8.sBHh,
         AppTextField(
           hintText: hintText,

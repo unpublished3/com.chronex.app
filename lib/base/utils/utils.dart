@@ -17,10 +17,13 @@ void showSnackBar(String message) {
         child: IntrinsicWidth(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            decoration: BoxDecoration(color: AppColor.black.withAlpha(90), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(
+              color: AppColor.black.withAlpha(90),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Text(
               message,
-              style: STextTheme.text14.copyWith(color: AppColor.white),
+              style: STextTheme.blacktext14.copyWith(color: AppColor.white),
               textAlign: TextAlign.center,
             ),
           ),

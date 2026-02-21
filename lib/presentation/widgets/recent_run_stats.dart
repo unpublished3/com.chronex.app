@@ -47,18 +47,18 @@ class _RecentRunStatsState extends State<RecentRunStats> {
               children: [
                 Text(
                   '${widget.monthname} ${widget.day.toString()}, ${widget.year.toString()}',
-                  style: STextTheme.blacktitles24,
+                  style: STextTheme.blacktext24,
                 ),
                 Text(
                   '${widget.recentdistance.toStringAsFixed(2)} km',
-                  style: STextTheme.greentextprimary,
+                  style: STextTheme.greentext24,
                 ),
               ],
             ),
           ),
           20.sBHh,
           DefaultTextStyle(
-            style: STextTheme.blacktitles20,
+            style: STextTheme.blacktext20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

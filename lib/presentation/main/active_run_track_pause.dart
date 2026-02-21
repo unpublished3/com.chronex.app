@@ -34,15 +34,15 @@ class _ActiveRunTrackPauseState extends State<ActiveRunTrackPause> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20.0, 30.0, 0.0, 0.0),
-                child: Text('Run paused', style: STextTheme.text26),
+                child: Text('Run paused', style: STextTheme.whitetext26),
               ),
             ),
             30.sBHh,
             Text(
               '${duration.inHours.toString().padLeft(2, '0')}:${duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${duration.inSeconds.remainder(60).toString().padLeft(2, '0')}',
-              style: STextTheme.text60,
+              style: STextTheme.whitetext60,
             ),
-            Text('duration', style: STextTheme.greenText),
+            Text('duration', style: STextTheme.greentextlight),
             40.sBHh,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -92,7 +92,7 @@ class _ActiveRunTrackPauseState extends State<ActiveRunTrackPause> {
                 ),
                 RunTrackStats(
                   icon: Icons.thermostat,
-                  title: 'Temp',
+                  title: 'Temperature',
                   value: temp.toString(),
                   unit: '°C',
                 ),
