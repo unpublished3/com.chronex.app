@@ -73,7 +73,10 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-          child: Text('Chronex', style: STextTheme.whitetext26),
+          child: Text(
+            'Chronex',
+            style: STextTheme.text26.copyWith(color: AppColor.white),
+          ),
         ),
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
@@ -95,25 +98,29 @@ class _HomeState extends State<Home> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsetsGeometry.fromLTRB(
-                        10.0,
-                        10.0,
+                      padding: EdgeInsetsGeometry.fromLTRB(
+                        12.sp,
+                        12.sp,
                         0.0,
-                        5.0,
+                        4.sp,
                       ),
                       child: Text(
                         'Welcome Back, ${widget.name}!',
-                        style: STextTheme.whitetext26,
+                        style: STextTheme.text26.copyWith(
+                          color: AppColor.white,
+                        ),
                       ),
                     ),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
+                      padding: EdgeInsets.fromLTRB(12.sp, 0.0, 0.0, 12.sp),
                       child: Text(
                         'Ready for your next Run?',
-                        style: STextTheme.whitetext18,
+                        style: STextTheme.text18.copyWith(
+                          color: AppColor.white,
+                        ),
                       ),
                     ),
                   ),
@@ -139,8 +146,8 @@ class _HomeState extends State<Home> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text('Your Stats', style: STextTheme.blacktext24),
+                padding: EdgeInsets.all(12.h),
+                child: Text('Your Stats', style: STextTheme.text24),
               ),
             ),
             Row(
@@ -185,7 +192,7 @@ class _HomeState extends State<Home> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
-                  child: Text('Recent activity', style: STextTheme.blacktext24),
+                  child: Text('Recent activity', style: STextTheme.text24),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
@@ -195,7 +202,12 @@ class _HomeState extends State<Home> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 10.0),
-                      child: Text('View all', style: STextTheme.greentext24),
+                      child: Text(
+                        'View all',
+                        style: STextTheme.text24.copyWith(
+                          color: AppColor.green,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -240,7 +252,10 @@ class _HistoryState extends State<History> {
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-          child: Text('Chronex', style: STextTheme.whitetext26),
+          child: Text(
+            'Chronex',
+            style: STextTheme.text26.copyWith(color: AppColor.white),
+          ),
         ),
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
@@ -260,7 +275,7 @@ class _HistoryState extends State<History> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(12.h),
                     child: Row(
                       children: [
                         const Icon(
@@ -271,7 +286,9 @@ class _HistoryState extends State<History> {
                         5.sBHw,
                         Text(
                           'Total Runs: $totalruns',
-                          style: STextTheme.greentext24,
+                          style: STextTheme.text24.copyWith(
+                            color: AppColor.primary,
+                          ),
                         ),
                       ],
                     ),
@@ -279,7 +296,9 @@ class _HistoryState extends State<History> {
                   Center(
                     child: Text(
                       'Keep up the great work! Every run counts.',
-                      style: STextTheme.greentext18,
+                      style: STextTheme.text18.copyWith(
+                        color: AppColor.primary,
+                      ),
                     ),
                   ),
                 ],
@@ -346,7 +365,7 @@ class _HomePageStatsState extends State<HomePageStats> {
             child: Row(
               children: [
                 Icon(widget.icon, color: AppColor.primary, size: 25.0),
-                Text(widget.title, style: STextTheme.blacktext20),
+                Text(widget.title, style: STextTheme.text20),
               ],
             ),
           ),
@@ -356,11 +375,11 @@ class _HomePageStatsState extends State<HomePageStats> {
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 5.0, 0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(widget.value, style: STextTheme.blacktext24),
+                  child: Text(widget.value, style: STextTheme.text24),
                 ),
               ),
               if (widget.unit != null)
-                Text(widget.unit ?? '', style: STextTheme.blacktext24),
+                Text(widget.unit ?? '', style: STextTheme.text24),
             ],
           ),
         ],

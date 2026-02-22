@@ -122,7 +122,7 @@ class _AppTextFieldState extends State<AppTextField> {
           textCapitalization: widget.textCapitalization,
           style:
               widget.style ??
-              STextTheme.blacktext14.copyWith(
+              STextTheme.text14.copyWith(
                 fontWeight: FontWeight.w400,
                 color: AppColor.black,
               ),
@@ -195,7 +195,7 @@ class _AppTextFieldState extends State<AppTextField> {
         textCapitalization: widget.textCapitalization,
         style:
             widget.style ??
-            STextTheme.blacktext14.copyWith(
+            STextTheme.text14.copyWith(
               fontWeight: FontWeight.w500,
               color: AppColor.black,
             ),
@@ -217,7 +217,7 @@ class _AppTextFieldState extends State<AppTextField> {
               EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
           errorText: widget.errorText,
           // errorStyle: errorStyle ?? STextTheme.caption1.copyWith(fontWeight: FontWeight.w400, color: AppColor.red500),
-          hintStyle: STextTheme.blacktext14.copyWith(
+          hintStyle: STextTheme.text14.copyWith(
             fontWeight: FontWeight.w400,
             color: AppColor.neutral,
           ),
@@ -286,7 +286,7 @@ class LabelInputGroupWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: STextTheme.blacktext14),
+        Text(label, style: STextTheme.text14),
         8.sBHh,
         AppTextField(
           hintText: hintText,

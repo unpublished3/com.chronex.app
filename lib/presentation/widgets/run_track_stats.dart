@@ -28,7 +28,7 @@ class _RunTrackStatsState extends State<RunTrackStats> {
     return Container(
       width: 175.w,
       height: 140.h,
-      padding: const EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(4.0.sp),
       decoration: BoxDecoration(
         color: Colors.grey.shade100.withAlpha(42),
         borderRadius: BorderRadius.circular(16),
@@ -40,11 +40,20 @@ class _RunTrackStatsState extends State<RunTrackStats> {
             children: [
               Icon(widget.icon, color: AppColor.white),
               3.sBWw,
-              Text(widget.title, style: STextTheme.greentextlight),
+              Text(
+                widget.title,
+                style: STextTheme.text24.copyWith(color: AppColor.green),
+              ),
             ],
           ),
-          Text(widget.value, style: STextTheme.whitetext36),
-          Text(widget.unit, style: STextTheme.greentextlight),
+          Text(
+            widget.value,
+            style: STextTheme.text36.copyWith(color: AppColor.white),
+          ),
+          Text(
+            widget.unit,
+            style: STextTheme.text24.copyWith(color: AppColor.green),
+          ),
         ],
       ),
     );

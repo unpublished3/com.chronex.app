@@ -10,7 +10,7 @@ class AppTheme {
       useMaterial3: true,
       appBarTheme: AppBarTheme(
         backgroundColor: AppColor.neutral50,
-        titleTextStyle: STextTheme.blacktext16,
+        titleTextStyle: STextTheme.text16,
         centerTitle: false,
         actionsPadding: EdgeInsets.only(right: 24.w),
         titleSpacing: 0,
@@ -28,8 +28,8 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColor.white,
-        selectedLabelStyle: STextTheme.blacktext12,
-        unselectedLabelStyle: STextTheme.blacktext12,
+        selectedLabelStyle: STextTheme.text12,
+        unselectedLabelStyle: STextTheme.text12,
         selectedItemColor: AppColor.primary,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
@@ -60,15 +60,11 @@ class AppTheme {
       datePickerTheme: DatePickerThemeData(
         confirmButtonStyle: TextButton.styleFrom(
           foregroundColor: AppColor.primary,
-          textStyle: STextTheme.blacktext14.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: STextTheme.text14.copyWith(fontWeight: FontWeight.w600),
         ),
         cancelButtonStyle: TextButton.styleFrom(
           foregroundColor: AppColor.neutral900,
-          textStyle: STextTheme.blacktext14.copyWith(
-            fontWeight: FontWeight.w400,
-          ),
+          textStyle: STextTheme.text14.copyWith(fontWeight: FontWeight.w400),
         ),
         // surfaceTintColor: AppColor.primary.withAlpha(10),
         inputDecorationTheme: InputDecorationTheme(
@@ -90,7 +86,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(color: AppColor.primary, width: 1.sp),
           ),
-          labelStyle: STextTheme.blacktext14.copyWith(color: AppColor.neutral),
+          labelStyle: STextTheme.text14.copyWith(color: AppColor.neutral),
         ),
         headerBackgroundColor: AppColor.primary,
         headerForegroundColor: AppColor.white,

@@ -23,7 +23,7 @@ void showSnackBar(String message) {
             ),
             child: Text(
               message,
-              style: STextTheme.blacktext14.copyWith(color: AppColor.white),
+              style: STextTheme.text14.copyWith(color: AppColor.white),
               textAlign: TextAlign.center,
             ),
           ),

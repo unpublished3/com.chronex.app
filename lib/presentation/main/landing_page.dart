@@ -39,31 +39,25 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             10.sBHh,
-            const Text(
+            Text(
               "Chronex",
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 45.0,
-                color: AppColor.white,
+              style: STextTheme.text45.copyWith(
                 fontWeight: FontWeight.bold,
+                color: AppColor.white,
               ),
             ),
-            const Text(
+            Text(
               "Your personal running companion",
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: AppColor.white,
-                fontSize: 20.0,
-              ),
+              style: STextTheme.text20.copyWith(color: AppColor.white),
             ),
             25.sBHh,
-            const FirstPageCard(
+            const FirstPageCardWidget(
               heading: 'Track Your Runs',
               body: 'Monitor your distance, pace and heart rate in real time.',
               icon: Icons.play_arrow_outlined,
             ),
             20.sBHh,
-            const FirstPageCard(
+            const FirstPageCardWidget(
               heading: 'Analyze Progress',
               body: 'Review your running history and see your improvement.',
               icon: Icons.trending_up_outlined,
@@ -87,11 +81,11 @@ class LandingPage extends StatelessWidget {
   }
 }
 
-class FirstPageCard extends StatelessWidget {
+class FirstPageCardWidget extends StatelessWidget {
   final IconData icon;
   final String heading;
   final String body;
-  const FirstPageCard({
+  const FirstPageCardWidget({
     super.key,
     required this.heading,
     required this.body,
@@ -121,19 +115,17 @@ class FirstPageCard extends StatelessWidget {
           ),
           Text(
             heading,
-            style: const TextStyle(
+            style: STextTheme.text30.copyWith(
               color: AppColor.white,
-              fontFamily: 'Roboto',
-              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
           5.sBHh,
           Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
+            padding: EdgeInsets.fromLTRB(12.sp, 0, 12.sp, 0),
             child: Text(
               body,
-              style: STextTheme.whitetext18,
+              style: STextTheme.text18.copyWith(color: AppColor.white),
               textAlign: TextAlign.center,
             ),
           ),
