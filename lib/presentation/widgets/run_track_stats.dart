@@ -26,7 +26,7 @@ class _RunTrackStatsState extends State<RunTrackStats> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 175.w,
+      width: 176.w,
       height: 140.h,
       padding: EdgeInsets.all(4.0.sp),
       decoration: BoxDecoration(
