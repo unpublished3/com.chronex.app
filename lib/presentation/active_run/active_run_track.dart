@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
 import 'package:chronex/presentation/provider/active_run_track_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/presentation/widgets/run_track_stats.dart';
