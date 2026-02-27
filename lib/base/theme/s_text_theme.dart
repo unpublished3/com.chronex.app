@@ -15,6 +15,7 @@ class STextTheme {
   static TextStyle text36 = baseText.copyWith(fontSize: 36);
   static TextStyle text26 = baseText.copyWith(fontSize: 26);
   static TextStyle text24 = baseText.copyWith(fontSize: 24);
+  static TextStyle text22 = baseText.copyWith(fontSize: 22);
   static TextStyle text20 = baseText.copyWith(fontSize: 20);
   static TextStyle text18 = baseText.copyWith(fontSize: 18);
   static TextStyle text16 = baseText.copyWith(fontSize: 16);
