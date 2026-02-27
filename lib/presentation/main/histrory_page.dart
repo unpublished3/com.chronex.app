@@ -26,7 +26,7 @@ class _HistoryPageState extends State<HistroryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
           child: Text(
             'Chronex',
             style: STextTheme.text26.copyWith(color: AppColor.white),

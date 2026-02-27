@@ -1,3 +1,4 @@
+import 'package:chronex/model/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
@@ -5,12 +6,12 @@ import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/presentation/widgets/recent_run_stats.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:chronex/presentation/widgets/home_page_stats.dart';
 
 class HomePage extends StatefulWidget {
-  final String name;
-  const HomePage({super.key, required this.name});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -27,6 +28,20 @@ class _HomePageState extends State<HomePage> {
   Duration recenttime = const Duration(hours: 1, minutes: 30);
   Duration recentpace = const Duration(minutes: 5, seconds: 25);
   int recentheartbeat = 144;
+
+  late Box<UserProfile> box;
+  UserProfile? profile;
+  late String name;
+  @override
+  void initState() {
+    super.initState();
+    box = Hive.box<UserProfile>('profileBox');
+    profile = box.get('user');
+    if (profile != null) {
+      name = profile!.name;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                         4.sp,
                       ),
                       child: Text(
-                        'Welcome Back, ${widget.name}!',
+                        'Welcome Back, $name!',
                         style: STextTheme.text26.copyWith(
                           color: AppColor.white,
                         ),

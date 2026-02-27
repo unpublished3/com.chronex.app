@@ -1,3 +1,4 @@
+import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
@@ -215,22 +216,15 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   AppButton(
                     onPressed: () {
                       _formGlobalKey.currentState!.validate();
-                      var box = Hive.box('Profile');
-                      Hive.openBox('Profile');
-                      box.put('name', _nameController.text.trim());
-                      box.put(
-                        'age',
-                        int.tryParse(_ageController.text.trim()) ?? 0,
+                      var box = Hive.box<UserProfile>('profileBox');
+                      final profile = UserProfile(
+                        name: _nameController.text.trim(),
+                        age: int.parse(_ageController.text.trim()),
+                        height: double.parse(_heightController.text.trim()),
+                        weight: double.parse(_weightController.text.trim()),
+                        gender: gender!,
                       );
-                      box.put(
-                        'height',
-                        double.tryParse(_heightController.text.trim()) ?? 0.0,
-                      );
-                      box.put(
-                        'weight',
-                        double.tryParse(_weightController.text.trim()) ?? 0.0,
-                      );
-                      box.put('gender', gender!);
+                      box.put('user', profile);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
