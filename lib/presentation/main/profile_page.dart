@@ -133,18 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         16.sBWw,
-                        Container(
-                          height: 50.h,
-                          width: 50.w,
-                          decoration: BoxDecoration(
-                            color: AppColor.green,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Icon(
-                            Icons.straighten,
-                            color: AppColor.primary,
-                          ),
-                        ),
+                        const CircularIcons(icon: Icons.straighten),
                         8.sBWw,
                         Text(
                           'Height(cm)',
@@ -153,15 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         5.sBWw,
-                        SizedBox(
-                          width: 95.w,
-                          child: AppTextField(
-                            controller: _heightController,
-                            height: 50.h,
-                            keyboardType: TextInputType.number,
-                            style: STextTheme.text20,
-                          ),
-                        ),
+                        PreloadedTextField(controller: _heightController),
                       ],
                     ),
                     10.sBHh,
@@ -169,17 +150,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         16.sBWw,
-                        Container(
-                          height: 50.h,
-                          width: 50.w,
-                          decoration: BoxDecoration(
-                            color: AppColor.green,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Icon(
-                            Icons.monitor_weight_outlined,
-                            color: AppColor.primary,
-                          ),
+                        const CircularIcons(
+                          icon: Icons.monitor_weight_outlined,
                         ),
                         8.sBWw,
                         Text(
@@ -189,15 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         10.sBWw,
-                        SizedBox(
-                          width: 95.w,
-                          child: AppTextField(
-                            controller: _weightController,
-                            height: 50.h,
-                            keyboardType: TextInputType.number,
-                            style: STextTheme.text20,
-                          ),
-                        ),
+                        PreloadedTextField(controller: _weightController),
                       ],
                     ),
                     10.sBHh,
@@ -205,18 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         16.sBWw,
-                        Container(
-                          height: 50.h,
-                          width: 50.w,
-                          decoration: BoxDecoration(
-                            color: AppColor.green,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Icon(
-                            Icons.date_range,
-                            color: AppColor.primary,
-                          ),
-                        ),
+                        const CircularIcons(icon: Icons.date_range),
                         8.sBWw,
                         Text(
                           'Age',
@@ -225,15 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         70.sBWw,
-                        SizedBox(
-                          width: 95.w,
-                          child: AppTextField(
-                            controller: _ageController,
-                            height: 50.h,
-                            keyboardType: TextInputType.number,
-                            style: STextTheme.text20,
-                          ),
-                        ),
+                        PreloadedTextField(controller: _ageController),
                       ],
                     ),
                     10.sBHh,
@@ -242,18 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           16.sBWw,
-                          Container(
-                            height: 50.h,
-                            width: 50.w,
-                            decoration: BoxDecoration(
-                              color: AppColor.green,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Icon(
-                              Icons.male,
-                              color: AppColor.primary,
-                            ),
-                          ),
+                          const CircularIcons(icon: Icons.male),
                           8.sBWw,
                           Text(
                             'Gender',
@@ -262,24 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           39.sBWw,
-                          SizedBox(
-                            width: 95.w,
-                            height: 50.h,
-                            child: TextFormField(
-                              initialValue: gender,
-                              readOnly: true,
-                              enabled: false,
-                              style: STextTheme.text20,
-                              decoration: InputDecoration(
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade200,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
+                          PreloadedDisabledTextFields(gender: gender),
                         ],
                       ),
                     if (gender == 'Female')
@@ -287,18 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           16.sBWw,
-                          Container(
-                            height: 50.h,
-                            width: 50.w,
-                            decoration: BoxDecoration(
-                              color: AppColor.green,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Icon(
-                              Icons.female,
-                              color: AppColor.primary,
-                            ),
-                          ),
+                          const CircularIcons(icon: Icons.female),
                           8.sBWw,
                           Text(
                             'Gender',
@@ -307,24 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           12.sBWw,
-                          SizedBox(
-                            width: 95.w,
-                            height: 50.h,
-                            child: TextFormField(
-                              initialValue: gender,
-                              readOnly: true,
-                              enabled: false,
-                              style: STextTheme.text20,
-                              decoration: InputDecoration(
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey.shade200,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
+                          PreloadedDisabledTextFields(gender: gender),
                         ],
                       ),
                     10.sBHh,
@@ -332,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: EdgeInsets.only(left: 16.sp),
                       child: AppButton(
                         onPressed: () {
-                          // add validator and a snackbar to make sure these values are parseable
+                          // add validator to make sure these values are parseable
                           final newHeight = double.parse(
                             _heightController.text,
                           );
@@ -369,6 +258,72 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CircularIcons extends StatelessWidget {
+  final IconData icon;
+  const CircularIcons({super.key, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50.h,
+      width: 50.w,
+      decoration: BoxDecoration(
+        color: AppColor.green,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Icon(icon, color: AppColor.primary),
+    );
+  }
+}
+
+class PreloadedTextField extends StatefulWidget {
+  final TextEditingController controller;
+  const PreloadedTextField({super.key, required this.controller});
+
+  @override
+  State<PreloadedTextField> createState() => _PreloadedTextFieldState();
+}
+
+class _PreloadedTextFieldState extends State<PreloadedTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 95.w,
+      child: AppTextField(
+        controller: widget.controller,
+        height: 50.h,
+        keyboardType: TextInputType.number,
+        style: STextTheme.text20,
+      ),
+    );
+  }
+}
+
+class PreloadedDisabledTextFields extends StatelessWidget {
+  final String gender;
+  const PreloadedDisabledTextFields({super.key, required this.gender});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 95.w,
+      height: 50.h,
+      child: TextFormField(
+        initialValue: gender,
+        readOnly: true,
+        enabled: false,
+        style: STextTheme.text20,
+        decoration: InputDecoration(
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
