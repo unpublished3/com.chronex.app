@@ -16,8 +16,6 @@ class ActiveRunTrack extends ConsumerStatefulWidget {
 }
 
 class _ActiveRunTrackState extends ConsumerState<ActiveRunTrack> {
-  bool isRunning = true;
-
   // @override
   // void initState() {
   //   super.initState();
@@ -110,11 +108,11 @@ class _ActiveRunTrackState extends ConsumerState<ActiveRunTrack> {
               ],
             ),
             50.sBHh,
-            if (isRunning)
+            if (run.isRunning)
               AppButton(
                 onPressed: () {
                   setState(() {
-                    isRunning = false;
+                    run.isRunning = false;
                   });
                 },
                 title: 'Pause Run',
@@ -129,14 +127,14 @@ class _ActiveRunTrackState extends ConsumerState<ActiveRunTrack> {
                 height: 75.h,
                 fontSize: 20.0,
               ),
-            if (!isRunning)
+            if (!run.isRunning)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   AppButton(
                     onPressed: () {
                       setState(() {
-                        isRunning = true;
+                        run.isRunning = true;
                       });
                     },
                     title: 'Resume Run',

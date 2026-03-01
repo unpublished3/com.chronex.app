@@ -1,12 +1,11 @@
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
-import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/presentation/widgets/app_text_field.dart';
+import 'package:chronex/storage/profile_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,34 +15,55 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Box<UserProfile> box;
-  UserProfile? profile;
-  late String name;
   late TextEditingController _heightController;
   late TextEditingController _weightController;
   late TextEditingController _ageController;
+  late String name;
   late String gender;
   @override
   void initState() {
     super.initState();
-    box = Hive.box<UserProfile>('profileBox');
-    profile = box.get('user');
+    _heightController = TextEditingController();
+    _weightController = TextEditingController();
+    _ageController = TextEditingController();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final profile = await ProfileManager().getProfile();
+    if (!mounted) return;
     if (profile != null) {
-      name = profile!.name;
-      gender = profile!.gender;
-      _heightController = TextEditingController(
-        text: profile!.height.toString().trim(),
-      );
-      _weightController = TextEditingController(
-        text: profile!.weight.toString().trim(),
-      );
-      _ageController = TextEditingController(
-        text: profile!.age.toString().trim(),
-      );
-    } else {
-      _heightController = TextEditingController();
-      _weightController = TextEditingController();
-      _ageController = TextEditingController();
+      setState(() {
+        name = profile.name;
+        gender = profile.gender;
+
+        _heightController.text = profile.height.toString();
+        _weightController.text = profile.weight.toString();
+        _ageController.text = profile.age.toString();
+      });
+    }
+  }
+
+  Future<void> _updateProfile() async {
+    final profile = await ProfileManager().getProfile();
+    final newHeight = double.parse(_heightController.text);
+    final newWeight = double.parse(_weightController.text);
+    final newAge = int.parse(_ageController.text);
+    bool changed = false;
+    if (profile!.height != newHeight) {
+      profile.height = newHeight;
+      changed = true;
+    }
+    if (profile.weight != newWeight) {
+      profile.weight = newWeight;
+      changed = true;
+    }
+    if (profile.age != newAge) {
+      profile.age = newAge;
+      changed = true;
+    }
+    if (changed) {
+      await ProfileManager().saveProfile(profile);
     }
   }
 
@@ -60,13 +80,11 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-          child: Text(
-            'Chronex',
-            style: STextTheme.text26.copyWith(color: AppColor.white),
-          ),
+        title: Text(
+          'Chronex',
+          style: STextTheme.text26.copyWith(color: AppColor.white),
         ),
+        titleSpacing: 16.sp,
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
       ),
@@ -220,32 +238,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: EdgeInsets.only(left: 16.sp),
                       child: AppButton(
-                        onPressed: () {
-                          // add validator to make sure these values are parseable
-                          final newHeight = double.parse(
-                            _heightController.text,
-                          );
-                          final newWeight = double.parse(
-                            _weightController.text,
-                          );
-                          final newAge = int.parse(_ageController.text);
-                          bool changed = false;
-                          if (profile!.height != newHeight) {
-                            profile!.height = newHeight;
-                            changed = true;
-                          }
-                          if (profile!.weight != newWeight) {
-                            profile!.weight = newWeight;
-                            changed = true;
-                          }
-                          if (profile!.age != newAge) {
-                            profile!.age = newAge;
-                            changed = true;
-                          }
-                          if (changed) {
-                            profile!.save();
-                          }
-                        },
+                        onPressed:
+                            _updateProfile, // add validation to make sure parse() works
                         title: 'save',
                         titleColor: AppColor.white,
                         color: AppColor.primary,

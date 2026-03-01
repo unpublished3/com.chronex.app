@@ -14,6 +14,7 @@ class HistroryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistroryPage> {
+  // provider is yet to be implemented
   int totalruns = 1;
   DateTime now = DateTime.now();
   String monthname = DateFormat('MMM').format(DateTime.now());
@@ -25,13 +26,11 @@ class _HistoryPageState extends State<HistroryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-          child: Text(
-            'Chronex',
-            style: STextTheme.text26.copyWith(color: AppColor.white),
-          ),
+        title: Text(
+          'Chronex',
+          style: STextTheme.text26.copyWith(color: AppColor.white),
         ),
+        titleSpacing: 16.sp,
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
       ),

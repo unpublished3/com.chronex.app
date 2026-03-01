@@ -1,4 +1,5 @@
 import 'package:chronex/base/theme/app_theme.dart';
+import 'package:chronex/model/run.dart';
 import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/navigation/app_router.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserProfileAdapter());
-  await Hive.openBox<UserProfile>('profileBox');
+  Hive.registerAdapter(RunAdapter());
   runApp(const ProviderScope(child: MyApp()));
 }
 
