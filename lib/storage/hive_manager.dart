@@ -32,4 +32,9 @@ class HiveManager {
     await _openBoxIfNeeded();
     return Hive.box(db).put(key, value);
   }
+
+  Future<List<dynamic>> readAll() async {
+    await _openBoxIfNeeded();
+    return Hive.box(db).values.toList();
+  }
 }

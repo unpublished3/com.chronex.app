@@ -1,20 +1,22 @@
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
+import 'package:chronex/presentation/provider/home_stats_provider.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/presentation/widgets/app_text_field.dart';
 import 'package:chronex/storage/profile_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/base/theme/app_color.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   late TextEditingController _heightController;
   late TextEditingController _weightController;
   late TextEditingController _ageController;
@@ -77,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(homePageStatsProvider);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
@@ -123,9 +126,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     5.sBHh,
                     Text(
-                      '1 runs . 0.0 km total',
+                      '${state.totalRuns.toString()} runs . ${state.totalDistance.toString()} km total',
                       style: STextTheme.text24.copyWith(color: AppColor.white),
-                    ), // change later
+                    ),
                   ],
                 ),
               ),

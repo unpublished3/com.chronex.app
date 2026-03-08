@@ -151,7 +151,7 @@ class _ActiveRunTrackState extends ConsumerState<ActiveRunTrack> {
                   ),
                   AppButton(
                     onPressed: () {
-                      // route to summary page
+                      // route to summary page and add the saved run to hive(also call the loadStats() function to keep provider updated).
                     },
                     title: 'Finish Run',
                     leadingIcon: const Icon(

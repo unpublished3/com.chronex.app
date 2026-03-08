@@ -1,3 +1,4 @@
+import 'package:chronex/presentation/provider/home_stats_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/storage/profile_manager.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
@@ -5,23 +6,19 @@ import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/presentation/widgets/recent_run_stats.dart';
 import 'package:chronex/base/theme/app_color.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:chronex/presentation/widgets/home_page_stats.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  // provider is yet to be implemented
-  int numberofruns = 1;
-  double distance = 14.5;
-  Duration time = const Duration(hours: 1, minutes: 30);
-  Duration pace = const Duration(minutes: 5, seconds: 25);
+class _HomePageState extends ConsumerState<HomePage> {
   DateTime now = DateTime.now();
   String monthname = DateFormat('MMM').format(DateTime.now());
   double recentdistance = 14.5;
@@ -45,6 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final stats = ref.watch(homePageStatsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -125,12 +123,12 @@ class _HomePageState extends State<HomePage> {
               HomePageStats(
                 icon: Icons.directions_run,
                 title: 'Total Runs',
-                value: numberofruns.toString(),
+                value: stats.totalRuns.toString(),
               ),
               HomePageStats(
                 icon: Icons.location_on,
                 title: 'Distance',
-                value: distance.toStringAsFixed(2),
+                value: stats.totalDistance.toStringAsFixed(2),
                 unit: 'km',
               ),
             ],
@@ -143,14 +141,13 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.timer,
                 title: 'Total Time',
                 value:
-                    '${time.inHours.toString().padLeft(2, '0')}:${time.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                    '${stats.totalTime.inHours.toString().padLeft(2, '0')}:${stats.totalTime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
                 unit: 'm',
               ),
               HomePageStats(
                 icon: Icons.bolt,
                 title: 'Avg Pace',
-                value:
-                    '${pace.inMinutes.remainder(60).toString().padLeft(2, '0')}:${pace.inSeconds.remainder(60).toString().padLeft(2, '0')}',
+                value: stats.avgPace.toString(),
                 unit: 'm/km',
               ),
             ],
