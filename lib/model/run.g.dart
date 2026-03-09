@@ -23,13 +23,14 @@ class RunAdapter extends TypeAdapter<Run> {
       ..avgCadence = fields[3] as int
       ..calories = fields[4] as int
       ..heartRate = fields[5] as int
-      ..temp = fields[6] as int;
+      ..temp = fields[6] as int
+      ..completedAt = fields[7] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, Run obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.timeSec)
       ..writeByte(1)
@@ -43,7 +44,9 @@ class RunAdapter extends TypeAdapter<Run> {
       ..writeByte(5)
       ..write(obj.heartRate)
       ..writeByte(6)
-      ..write(obj.temp);
+      ..write(obj.temp)
+      ..writeByte(7)
+      ..write(obj.completedAt);
   }
 
   @override

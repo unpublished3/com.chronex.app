@@ -1,4 +1,5 @@
 import 'package:chronex/presentation/provider/home_stats_provider.dart';
+import 'package:chronex/presentation/provider/recent_runs_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/storage/profile_manager.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
@@ -19,18 +20,12 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  DateTime now = DateTime.now();
-  String monthname = DateFormat('MMM').format(DateTime.now());
-  double recentdistance = 14.5;
-  Duration recenttime = const Duration(hours: 1, minutes: 30);
-  Duration recentpace = const Duration(minutes: 5, seconds: 25);
-  int recentheartbeat = 144;
-
   late String name;
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    ref.read(recentRunsProvider.notifier).getRecentRuns();
   }
 
   Future<void> _loadProfile() async {
@@ -43,6 +38,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final stats = ref.watch(homePageStatsProvider);
+    final runs = ref.watch(recentRunsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -179,16 +175,26 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ],
           ),
-          RecentRunStats(
-            monthname: monthname,
-            day: now.day,
-            year: now.year,
-            recentdistance: recentdistance,
-            recenttime:
-                '${recenttime.inHours.toString().padLeft(2, '0')}:${recenttime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
-            recentpace:
-                '${recentpace.inMinutes.remainder(60).toString().padLeft(2, '0')}:${recentpace.inSeconds.remainder(60).toString().padLeft(2, '0')}',
-            recentheartbeat: recentheartbeat,
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: runs.length,
+              itemBuilder: (context, index) {
+                final run = runs[index];
+                final date = run.completionDate;
+                final monthName = DateFormat.MMMM().format(date);
+                return RecentRunStats(
+                  monthname: monthName,
+                  day: run.completionDate.day,
+                  year: run.completionDate.year,
+                  recentdistance: run.distance,
+                  recenttime:
+                      '${run.duration.inHours.toString().padLeft(2, '0')}:${run.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                  recentpace: run.pace.toString(),
+                  recentheartbeat: run.heartRate,
+                );
+              },
+            ),
           ),
         ],
       ),

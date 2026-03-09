@@ -24,6 +24,9 @@ class Run extends HiveObject {
   @HiveField(6)
   late int temp;
 
+  @HiveField(7)
+  late DateTime completedAt;
+
   // Hive-friendly default constructor
   Run();
 
@@ -36,6 +39,7 @@ class Run extends HiveObject {
     required this.calories,
     required this.heartRate,
     required this.temp,
+    required this.completedAt,
   }) : timeSec = time.inSeconds;
 
   Duration get runTime => Duration(seconds: timeSec);
