@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+
+  <ellipse
+    cx="24"
+    cy="18.5"
+    rx="5.802"
+    ry="6.5"
+    fill="none"
+    stroke="#000"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+  <path
+    d="M7.27 34.963C5.202 31.815 4 28.048 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20c0 5.958-2.539 11.253-6.672 14.917C33.776 42.118 29.147 44 24 44s-9.843-1.936-13.395-5.137l.09-.271C12.602 32.863 17.96 29 24 29c4.646 0 8.889 2.286 11.467 5.948"
+    fill="none"
+    stroke="#000"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+</svg>
