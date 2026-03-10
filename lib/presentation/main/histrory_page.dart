@@ -9,14 +9,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-class HistroryPage extends ConsumerStatefulWidget {
-  const HistroryPage({super.key});
+class HistoryPage extends ConsumerStatefulWidget {
+  const HistoryPage({super.key});
 
   @override
-  ConsumerState<HistroryPage> createState() => _HistoryPageState();
+  ConsumerState<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends ConsumerState<HistroryPage> {
+class _HistoryPageState extends ConsumerState<HistoryPage> {
   @override
   void initState() {
     super.initState();
@@ -43,11 +43,11 @@ class _HistoryPageState extends ConsumerState<HistroryPage> {
           children: [
             Container(
               margin: const EdgeInsets.all(25.0),
-              height: 120.h,
-              width: 370.w,
+              height: 125.h,
+              width: 380.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: const Color.fromARGB(255, 197, 254, 198),
+                color: AppColor.green,
               ),
               child: Column(
                 children: [
@@ -81,26 +81,24 @@ class _HistoryPageState extends ConsumerState<HistroryPage> {
                 ],
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: runs.length,
-                itemBuilder: (context, index) {
-                  final run = runs[index];
-                  final date = run.completionDate;
-                  final monthName = DateFormat.MMMM().format(date);
-                  return RecentRunStats(
-                    monthname: monthName,
-                    day: run.completionDate.day,
-                    year: run.completionDate.year,
-                    recentdistance: run.distance,
-                    recenttime:
-                        '${run.duration.inHours.toString().padLeft(2, '0')}:${run.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}',
-                    recentpace: run.pace.toString(),
-                    recentheartbeat: run.heartRate,
-                  );
-                },
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: runs.length,
+              itemBuilder: (context, index) {
+                final run = runs[index];
+                final date = run.completionDate;
+                final monthName = DateFormat.MMMM().format(date);
+                return RecentRunStats(
+                  monthname: monthName,
+                  day: run.completionDate.day,
+                  year: run.completionDate.year,
+                  recentdistance: run.distance,
+                  recenttime:
+                      '${run.duration.inHours.toString().padLeft(2, '0')}:${run.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                  recentpace: run.pace.toString(),
+                  recentheartbeat: run.heartRate,
+                );
+              },
             ),
           ],
         ),

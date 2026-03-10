@@ -1,13 +1,12 @@
 import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
+import 'package:chronex/storage/profile_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/presentation/widgets/app_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class PersonalInformation extends StatefulWidget {
   const PersonalInformation({super.key});
@@ -23,8 +22,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+
   String? gender;
   List<String> genderOption = ['Male', 'Female', 'Other'];
+
+  final ProfileManager _profileManager = ProfileManager();
   @override
   void dispose() {
     _nameController.dispose();
@@ -214,9 +216,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     ],
                   ),
                   AppButton(
-                    onPressed: () {
-                      _formGlobalKey.currentState!.validate();
-                      var box = Hive.box<UserProfile>('profileBox');
+                    onPressed: () async {
+                      if (!_formGlobalKey.currentState!.validate()) return;
                       final profile = UserProfile(
                         name: _nameController.text.trim(),
                         age: int.parse(_ageController.text.trim()),
@@ -224,17 +225,31 @@ class _PersonalInformationState extends State<PersonalInformation> {
                         weight: double.parse(_weightController.text.trim()),
                         gender: gender!,
                       );
-                      box.put('user', profile);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Profile saved sucessfully!',
-                            textAlign: TextAlign.center,
+                      try {
+                        await _profileManager.saveProfile(profile);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(this.context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Profile saved sucessfully!',
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: Duration(seconds: 2),
                           ),
-                          duration: Duration(seconds: 2),
-                        ),
-                        // Route to onboard_page
-                      );
+                        );
+                      } catch (e) {
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(this.context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Error Saving Profile',
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      // Route to onboard_page
                     },
                     title: 'Continue',
                     titleColor: AppColor.white,
