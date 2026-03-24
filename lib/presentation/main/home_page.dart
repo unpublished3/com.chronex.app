@@ -21,6 +21,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late String name;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     final profile = await ProfileManager().getProfile();
     if (profile != null) {
       name = profile.name;
+    } else {
+      name = 'Runner';
     }
   }
 
@@ -41,10 +44,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final runs = ref.watch(recentRunsProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Chronex',
-          style: STextTheme.text26.copyWith(color: AppColor.white),
-        ),
+        title: Text('Chronex', style: STextTheme.text26.copyWith(color: AppColor.white)),
         titleSpacing: 16.sp,
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
@@ -55,36 +55,22 @@ class _HomePageState extends ConsumerState<HomePage> {
           Container(
             width: 360.w,
             height: 180.h,
-            decoration: BoxDecoration(
-              color: AppColor.primary,
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
             margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsetsGeometry.fromLTRB(
-                      12.sp,
-                      12.sp,
-                      0.0,
-                      4.sp,
-                    ),
-                    child: Text(
-                      'Welcome Back, $name!',
-                      style: STextTheme.text26.copyWith(color: AppColor.white),
-                    ),
+                    padding: EdgeInsetsGeometry.fromLTRB(12.sp, 12.sp, 0.0, 4.sp),
+                    child: Text('Welcome Back, $name!', style: STextTheme.text26.copyWith(color: AppColor.white)),
                   ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(12.sp, 0.0, 0.0, 12.sp),
-                    child: Text(
-                      'Ready for your next Run?',
-                      style: STextTheme.text18.copyWith(color: AppColor.white),
-                    ),
+                    child: Text('Ready for your next Run?', style: STextTheme.text18.copyWith(color: AppColor.white)),
                   ),
                 ),
                 AppButton(
@@ -93,11 +79,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                   title: 'Start New Run',
                   fontSize: 20.0,
-                  leadingIcon: const Icon(
-                    Icons.play_arrow,
-                    color: AppColor.primary,
-                    size: 25.0,
-                  ),
+                  leadingIcon: const Icon(Icons.play_arrow, color: AppColor.primary, size: 25.0),
                   color: Colors.grey.shade100,
                   titleColor: AppColor.primary,
                   width: 320.w,
@@ -116,17 +98,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              HomePageStats(
-                icon: Icons.directions_run,
-                title: 'Total Runs',
-                value: stats.totalRuns.toString(),
-              ),
-              HomePageStats(
-                icon: Icons.location_on,
-                title: 'Distance',
-                value: stats.totalDistance.toStringAsFixed(2),
-                unit: 'km',
-              ),
+              HomePageStats(icon: Icons.directions_run, title: 'Total Runs', value: stats.totalRuns.toString()),
+              HomePageStats(icon: Icons.location_on, title: 'Distance', value: stats.totalDistance.toStringAsFixed(2), unit: 'km'),
             ],
           ),
           25.sBHh,
@@ -136,16 +109,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               HomePageStats(
                 icon: Icons.timer,
                 title: 'Total Time',
-                value:
-                    '${stats.totalTime.inHours.toString().padLeft(2, '0')}:${stats.totalTime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                value: '${stats.totalTime.inHours.toString().padLeft(2, '0')}:${stats.totalTime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
                 unit: 'm',
               ),
-              HomePageStats(
-                icon: Icons.bolt,
-                title: 'Avg Pace',
-                value: stats.avgPace.toString(),
-                unit: 'm/km',
-              ),
+              HomePageStats(icon: Icons.bolt, title: 'Avg Pace', value: stats.avgPace.toString(), unit: 'm/km'),
             ],
           ),
           25.sBHh,
@@ -164,12 +131,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 10.0),
-                    child: Text(
-                      'View all',
-                      style: STextTheme.text24.copyWith(
-                        color: AppColor.primary,
-                      ),
-                    ),
+                    child: Text('View all', style: STextTheme.text24.copyWith(color: AppColor.primary)),
                   ),
                 ),
               ),
@@ -188,8 +150,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   day: run.completionDate.day,
                   year: run.completionDate.year,
                   recentdistance: run.distance,
-                  recenttime:
-                      '${run.duration.inHours.toString().padLeft(2, '0')}:${run.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                  recenttime: '${run.duration.inHours.toString().padLeft(2, '0')}:${run.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}',
                   recentpace: run.pace.toString(),
                   recentheartbeat: run.heartRate,
                 );

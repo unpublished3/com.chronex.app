@@ -1,13 +1,15 @@
+import 'package:chronex/base/utils/utils.dart';
 import 'package:chronex/model/user_profile.dart';
+import 'package:chronex/navigation/app_router_path.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
+import 'package:chronex/storage/hive_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/presentation/widgets/app_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class PersonalInformation extends StatefulWidget {
   const PersonalInformation({super.key});
@@ -43,10 +45,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
           child: Container(
             width: 350.w,
             height: 625.h,
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
             child: Form(
               key: _formGlobalKey,
               child: Column(
@@ -55,21 +54,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   Container(
                     width: 90.w,
                     height: 90.h,
-                    decoration: BoxDecoration(
-                      color: AppColor.primary,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: AppColor.white,
-                      size: 50,
-                    ),
+                    decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(50)),
+                    child: const Icon(Icons.person, color: AppColor.white, size: 50),
                   ),
                   Text('Personal Information', style: STextTheme.text30),
-                  Text(
-                    'Help us personalize your experience',
-                    style: STextTheme.text18,
-                  ),
+                  Text('Help us personalize your experience', style: STextTheme.text18),
                   SizedBox(
                     width: 300.w,
                     child: Column(
@@ -103,10 +92,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                'Height (cm)',
-                                style: STextTheme.text20,
-                              ),
+                              child: Text('Height (cm)', style: STextTheme.text20),
                             ),
                             5.sBHh,
                             AppTextField(
@@ -130,10 +116,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                'Weight (kg)',
-                                style: STextTheme.text20,
-                              ),
+                              child: Text('Weight (kg)', style: STextTheme.text20),
                             ),
                             5.sBHh,
                             AppTextField(
@@ -191,10 +174,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                             5.sBHh,
                             DropdownButtonFormField<String>(
                               items: genderOption.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(item),
-                                );
+                                return DropdownMenuItem<String>(value: item, child: Text(item));
                               }).toList(),
                               onChanged: (value) {
                                 setState(() {
@@ -214,35 +194,27 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     ],
                   ),
                   AppButton(
-                    onPressed: () {
+                    onPressed: () async {
                       _formGlobalKey.currentState!.validate();
-                      var box = Hive.box<UserProfile>('profileBox');
-                      final profile = UserProfile(
-                        name: _nameController.text.trim(),
-                        age: int.parse(_ageController.text.trim()),
-                        height: double.parse(_heightController.text.trim()),
-                        weight: double.parse(_weightController.text.trim()),
-                        gender: gender!,
-                      );
-                      box.put('user', profile);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Profile saved sucessfully!',
-                            textAlign: TextAlign.center,
-                          ),
-                          duration: Duration(seconds: 2),
+                      await HiveManager('profileBox').write(
+                        'user',
+                        UserProfile(
+                          name: _nameController.text.trim(),
+                          age: int.parse(_ageController.text.trim()),
+                          height: double.parse(_heightController.text.trim()),
+                          weight: double.parse(_weightController.text.trim()),
+                          gender: gender!,
                         ),
-                        // Route to onboard_page
                       );
+                      showSnackBar("Profile saved successfully");
+                      if (context.mounted) {
+                        context.go(AppRouterPath.home);
+                      }
                     },
                     title: 'Continue',
-                    titleColor: AppColor.white,
-                    fontSize: 20.0,
-                    color: AppColor.primary,
                     height: 50.h,
                     width: 300.w,
-                    borderRadius: 16,
+                    // borderRadius: 16,
                   ),
                 ],
               ),
