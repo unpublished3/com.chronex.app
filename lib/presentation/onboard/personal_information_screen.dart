@@ -3,6 +3,7 @@ import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/navigation/app_router_path.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/storage/hive_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
@@ -27,6 +28,19 @@ class _PersonalInformationState extends State<PersonalInformation> {
   final TextEditingController _ageController = TextEditingController();
   String? gender;
   List<String> genderOption = ['Male', 'Female', 'Other'];
+
+  @override
+  void initState() {
+    super.initState();
+    if (kDebugMode) {
+      _nameController.text = "Name";
+      _heightController.text = "120";
+      _weightController.text = "120";
+      _ageController.text = "120";
+      gender = "Male";
+    }
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
