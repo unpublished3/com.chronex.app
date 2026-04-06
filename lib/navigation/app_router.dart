@@ -20,16 +20,13 @@ final appRouter = GoRouter(
           routes: [GoRoute(path: AppRouterPath.home, builder: (context, state) => const HomePage())],
         ),
         StatefulShellBranch(
-          routes: [GoRoute(path: AppRouterPath.history, builder: (context, state) => const HistroryPage())],
-        ),
-        StatefulShellBranch(
-          routes: [GoRoute(path: AppRouterPath.profile, builder: (context, state) => const ProfilePage())],
-        ),
-        StatefulShellBranch(
           routes: [GoRoute(path: AppRouterPath.connection, builder: (context, state) => const ConnectionPage())],
         ),
         StatefulShellBranch(
           routes: [GoRoute(path: AppRouterPath.profile, builder: (context, state) => const ProfilePage())],
+        ),
+        StatefulShellBranch(
+          routes: [GoRoute(path: AppRouterPath.history, builder: (context, state) => const HistroryPage())],
         ),
       ],
       builder: (context, state, navigationShell) => MainPage(child: navigationShell),
