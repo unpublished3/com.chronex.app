@@ -4,19 +4,19 @@ part 'user_profile.g.dart';
 @HiveType(typeId: 0)
 class UserProfile extends HiveObject {
   @HiveField(0)
-  late String name;
+  final String? name;
 
   @HiveField(1)
-  late int age;
+  final int? age;
 
   @HiveField(2)
-  late double height;
+  final double? height;
 
   @HiveField(3)
-  late double weight;
+  final double? weight;
 
   @HiveField(4)
-  late String gender;
+  final String? gender;
 
   UserProfile({
     required this.name,

@@ -17,17 +17,14 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-  late TextEditingController _heightController;
-  late TextEditingController _weightController;
-  late TextEditingController _ageController;
-  late String name;
-  late String gender;
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  String? name;
+  String? gender;
   @override
   void initState() {
     super.initState();
-    _heightController = TextEditingController();
-    _weightController = TextEditingController();
-    _ageController = TextEditingController();
     _loadProfile();
   }
 
@@ -46,28 +43,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-  Future<void> _updateProfile() async {
-    final profile = await ProfileManager().getProfile();
-    final newHeight = double.parse(_heightController.text);
-    final newWeight = double.parse(_weightController.text);
-    final newAge = int.parse(_ageController.text);
-    bool changed = false;
-    if (profile!.height != newHeight) {
-      profile.height = newHeight;
-      changed = true;
-    }
-    if (profile.weight != newWeight) {
-      profile.weight = newWeight;
-      changed = true;
-    }
-    if (profile.age != newAge) {
-      profile.age = newAge;
-      changed = true;
-    }
-    if (changed) {
-      await ProfileManager().saveProfile(profile);
-    }
-  }
+  // Future<void> _updateProfile() async {
+  //   final profile = await ProfileManager().getProfile();
+  //   final newHeight = double.parse(_heightController.text);
+  //   final newWeight = double.parse(_weightController.text);
+  //   final newAge = int.parse(_ageController.text);
+  //   bool changed = false;
+  //   if (profile!.height != newHeight) {
+  //     profile.height = newHeight;
+  //     changed = true;
+  //   }
+  //   if (profile.weight != newWeight) {
+  //     profile.weight = newWeight;
+  //     changed = true;
+  //   }
+  //   if (profile.age != newAge) {
+  //     profile.age = newAge;
+  //     changed = true;
+  //   }
+  //   if (changed) {
+  //     await ProfileManager().saveProfile(profile);
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -83,10 +80,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text(
-          'Chronex',
-          style: STextTheme.text26.copyWith(color: AppColor.white),
-        ),
+        title: Text('Chronex', style: STextTheme.text26.copyWith(color: AppColor.white)),
         titleSpacing: 16.sp,
         backgroundColor: AppColor.primary,
         toolbarHeight: 60.h,
@@ -100,30 +94,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               Container(
                 width: 350.w,
                 height: 220.h,
-                decoration: BoxDecoration(
-                  color: AppColor.primary,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
                 child: Column(
                   children: [
                     10.sBHh,
                     Container(
                       width: 90.w,
                       height: 90.h,
-                      decoration: BoxDecoration(
-                        color: AppColor.green.withAlpha(50),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: AppColor.white,
-                        size: 50,
-                      ),
+                      decoration: BoxDecoration(color: AppColor.green.withAlpha(50), borderRadius: BorderRadius.circular(50)),
+                      child: const Icon(Icons.person, color: AppColor.white, size: 50),
                     ),
-                    Text(
-                      name,
-                      style: STextTheme.text36.copyWith(color: AppColor.white),
-                    ),
+                    Text(name ?? 'Runner', style: STextTheme.text36.copyWith(color: AppColor.white)),
                     5.sBHh,
                     Text(
                       '${state.totalRuns.toString()} runs . ${state.totalDistance.toString()} km total',
@@ -136,19 +117,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               Container(
                 width: 350.w,
                 height: 380.h,
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: EdgeInsets.all(16.sp),
-                      child: Text(
-                        'Personal Information',
-                        style: STextTheme.text22,
-                      ),
+                      child: Text('Personal Information', style: STextTheme.text22),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -156,12 +131,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         16.sBWw,
                         const CircularIcons(icon: Icons.straighten),
                         8.sBWw,
-                        Text(
-                          'Height(cm)',
-                          style: STextTheme.text20.copyWith(
-                            color: AppColor.primary,
-                          ),
-                        ),
+                        Text('Height(cm)', style: STextTheme.text20.copyWith(color: AppColor.primary)),
                         5.sBWw,
                         PreloadedTextField(controller: _heightController),
                       ],
@@ -171,16 +141,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         16.sBWw,
-                        const CircularIcons(
-                          icon: Icons.monitor_weight_outlined,
-                        ),
+                        const CircularIcons(icon: Icons.monitor_weight_outlined),
                         8.sBWw,
-                        Text(
-                          'weight(kg)',
-                          style: STextTheme.text20.copyWith(
-                            color: AppColor.primary,
-                          ),
-                        ),
+                        Text('weight(kg)', style: STextTheme.text20.copyWith(color: AppColor.primary)),
                         10.sBWw,
                         PreloadedTextField(controller: _weightController),
                       ],
@@ -192,12 +155,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         16.sBWw,
                         const CircularIcons(icon: Icons.date_range),
                         8.sBWw,
-                        Text(
-                          'Age',
-                          style: STextTheme.text20.copyWith(
-                            color: AppColor.primary,
-                          ),
-                        ),
+                        Text('Age', style: STextTheme.text20.copyWith(color: AppColor.primary)),
                         70.sBWw,
                         PreloadedTextField(controller: _ageController),
                       ],
@@ -210,14 +168,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           16.sBWw,
                           const CircularIcons(icon: Icons.male),
                           8.sBWw,
-                          Text(
-                            'Gender',
-                            style: STextTheme.text20.copyWith(
-                              color: AppColor.primary,
-                            ),
-                          ),
+                          Text('Gender', style: STextTheme.text20.copyWith(color: AppColor.primary)),
                           39.sBWw,
-                          PreloadedDisabledTextFields(gender: gender),
+                          PreloadedDisabledTextFields(gender: gender ?? "Male"),
                         ],
                       ),
                     if (gender == 'Female')
@@ -227,22 +180,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           16.sBWw,
                           const CircularIcons(icon: Icons.female),
                           8.sBWw,
-                          Text(
-                            'Gender',
-                            style: STextTheme.text20.copyWith(
-                              color: AppColor.primary,
-                            ),
-                          ),
+                          Text('Gender', style: STextTheme.text20.copyWith(color: AppColor.primary)),
                           12.sBWw,
-                          PreloadedDisabledTextFields(gender: gender),
+                          PreloadedDisabledTextFields(gender: gender ?? "Female"),
                         ],
                       ),
                     10.sBHh,
                     Padding(
                       padding: EdgeInsets.only(left: 16.sp),
                       child: AppButton(
-                        onPressed:
-                            _updateProfile, // add validation to make sure parse() works
+                        // onPressed: _updateProfile, // add validation to make sure parse() works
+                        onPressed: () {},
                         title: 'save',
                         titleColor: AppColor.white,
                         color: AppColor.primary,
@@ -271,10 +219,7 @@ class CircularIcons extends StatelessWidget {
     return Container(
       height: 50.h,
       width: 50.w,
-      decoration: BoxDecoration(
-        color: AppColor.green,
-        borderRadius: BorderRadius.circular(50),
-      ),
+      decoration: BoxDecoration(color: AppColor.green, borderRadius: BorderRadius.circular(50)),
       child: Icon(icon, color: AppColor.primary),
     );
   }
@@ -293,12 +238,7 @@ class _PreloadedTextFieldState extends State<PreloadedTextField> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 95.w,
-      child: AppTextField(
-        controller: widget.controller,
-        height: 50.h,
-        keyboardType: TextInputType.number,
-        style: STextTheme.text20,
-      ),
+      child: AppTextField(controller: widget.controller, height: 50.h, keyboardType: TextInputType.number, style: STextTheme.text20),
     );
   }
 }
