@@ -28,7 +28,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   String? gender;
-  List<String> genderOption = ['Male', 'Female', 'Other'];
+  List<String> genderOptions = ['Male', 'Female', 'Other'];
 
   @override
   void initState() {
@@ -121,23 +121,22 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     12.sBWw,
                     Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Gender', style: STextTheme.text20),
+                          Text('Gender', style: STextTheme.text14),
                           5.sBHh,
-                          DropdownButtonFormField<String>(
-                            items: genderOption.map((item) {
-                              return DropdownMenuItem<String>(value: item, child: Text(item));
-                            }).toList(),
+                          AppDropdown(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Gender is required';
+                              }
+                              return null;
+                            },
+                            items: buildDropdownMenuItems(genderOptions),
                             onChanged: (value) {
                               setState(() {
                                 gender = value?.trim();
                               });
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Required';
-                              }
-                              return null;
                             },
                           ),
                         ],

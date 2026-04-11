@@ -340,12 +340,10 @@ class AppDropdown<T> extends StatelessWidget {
           labelText: labelText,
           helperText: helperText,
           prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon ?? const Icon(Icons.keyboard_arrow_down_outlined),
+          suffixIcon: suffixIcon ?? Icon(Icons.keyboard_arrow_down_outlined, size: 16.sp),
           fillColor: fillColor,
           filled: true,
-          contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical: 18.h, horizontal: 10.w),
           errorText: errorText,
-          // errorStyle: errorStyle ?? Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
           hintStyle: hintStyle ?? Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w400, color: AppColor.neutral),
           labelStyle: labelStyle ?? Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
           border: borderless
