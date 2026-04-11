@@ -43,7 +43,7 @@ class _ConnectionPageState extends ConsumerState<ConnectionPage> {
   void _setupServices() {
     ref.read(bluetoothProvider.notifier).discoverServices().then((_) {
       setState(() {
-        _hrStream = ref.read(bluetoothProvider.notifier).subscribeTo(BluetoothUuids.characteristicUuid);
+        _hrStream = ref.read(bluetoothProvider.notifier).subscribeTo(BluetoothUuids.hrUuid);
       });
     });
   }
@@ -61,7 +61,7 @@ class _ConnectionPageState extends ConsumerState<ConnectionPage> {
       if (!wasConnected && isConnected) {
         ref.read(bluetoothProvider.notifier).discoverServices().then((_) {
           setState(() {
-            _hrStream = ref.read(bluetoothProvider.notifier).subscribeTo(BluetoothUuids.characteristicUuid);
+            _hrStream = ref.read(bluetoothProvider.notifier).subscribeTo(BluetoothUuids.hrUuid);
           });
         });
       }
@@ -83,7 +83,7 @@ class _ConnectionPageState extends ConsumerState<ConnectionPage> {
               },
             )
           else
-            const Text("--"),
+            const Text("-"),
 
           Consumer(
             builder: (context, ref, _) {
