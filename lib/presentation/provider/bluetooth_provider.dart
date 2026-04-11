@@ -133,15 +133,15 @@ class BluetoothNotifier extends AsyncNotifier<BLEState> {
   }
 
   Stream<CharacteristicData> subscribeTo(Guid id) async* {
-  final char = _charCache[id];
-  if (char == null) return;
+    final char = _charCache[id];
+    if (char == null) return;
 
-  await char.setNotifyValue(true);
+    await char.setNotifyValue(true);
 
-  await for (final value in char.onValueReceived) {
-    yield CharacteristicData(uuid: char.uuid, value: value);
+    await for (final value in char.onValueReceived) {
+      yield CharacteristicData(uuid: char.uuid, value: value);
+    }
   }
-}
 }
 
 final bluetoothProvider = AsyncNotifierProvider<BluetoothNotifier, BLEState>(BluetoothNotifier.new);

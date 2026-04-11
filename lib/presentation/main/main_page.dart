@@ -1,21 +1,26 @@
 import 'package:chronex/base/resources/sapp_assets.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
+import 'package:chronex/presentation/provider/bluetooth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends ConsumerStatefulWidget {
   final StatefulNavigationShell child;
   const MainPage({super.key, required this.child});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  ConsumerState<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends ConsumerState<MainPage> {
+  int _currentIndex = 0;
+
   void _switchTab(int index) {
+    _currentIndex = index;
     widget.child.goBranch(index);
   }
 
@@ -60,6 +65,15 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+      floatingActionButton: _currentIndex == 1
+          ? FloatingActionButton(
+              backgroundColor: AppColor.primary,
+              child: const Icon(Icons.refresh, color: AppColor.green),
+              onPressed: () {
+                ref.read(bluetoothProvider.notifier).startScanning();
+              },
+            )
+          : null,
     );
   }
 
