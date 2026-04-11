@@ -30,6 +30,7 @@ class _ConnectionPageState extends ConsumerState<ConnectionPage> {
       children: [
         ListView.separated(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             final uuid = ref.watch(bluetoothProvider).value?.services?[index].uuid.toString() ?? "No Services Found";
             return uuid == BluetoothUuids.serviceUuid.toString()

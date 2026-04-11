@@ -16,15 +16,16 @@ class RunAdapter extends TypeAdapter<Run> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Run()
-      ..timeSec = fields[0] as int
-      ..distance = fields[1] as double
-      ..avgSecondsPerKm = fields[2] as int
-      ..avgCadence = fields[3] as int
-      ..calories = fields[4] as int
-      ..heartRate = fields[5] as int
-      ..temp = fields[6] as int
-      ..completedAt = fields[7] as DateTime;
+    return Run(
+      timeSec: fields[0] as int?,
+      distance: fields[1] as double?,
+      avgSecondsPerKm: fields[2] as int?,
+      avgCadence: fields[3] as int?,
+      calories: fields[4] as int?,
+      heartRate: fields[5] as int?,
+      temp: fields[6] as int?,
+      completedAt: fields[7] as DateTime?,
+    );
   }
 
   @override

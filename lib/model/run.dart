@@ -4,35 +4,31 @@ part 'run.g.dart';
 @HiveType(typeId: 1)
 class Run extends HiveObject {
   @HiveField(0)
-  late int timeSec; // storing time in seconds
+  final int? timeSec;
 
   @HiveField(1)
-  late double distance;
+  final double? distance;
 
   @HiveField(2)
-  late int avgSecondsPerKm;
+  final int? avgSecondsPerKm;
 
   @HiveField(3)
-  late int avgCadence;
+  final int? avgCadence;
 
   @HiveField(4)
-  late int calories;
+  final int? calories;
 
   @HiveField(5)
-  late int heartRate;
+  final int? heartRate;
 
   @HiveField(6)
-  late int temp;
+  final int? temp;
 
   @HiveField(7)
-  late DateTime completedAt;
+  final DateTime? completedAt;
 
-  // Hive-friendly default constructor
-  Run();
-
-  // Optional named constructor for convenience
-  Run.create({
-    required Duration time,
+  Run({
+    required this.timeSec,
     required this.distance,
     required this.avgSecondsPerKm,
     required this.avgCadence,
@@ -40,8 +36,7 @@ class Run extends HiveObject {
     required this.heartRate,
     required this.temp,
     required this.completedAt,
-  }) : timeSec = time.inSeconds;
+  });
 
-  Duration get runTime => Duration(seconds: timeSec);
-  set runTime(Duration d) => timeSec = d.inSeconds;
+  Duration get runTime => Duration(seconds: timeSec ?? 0);
 }
