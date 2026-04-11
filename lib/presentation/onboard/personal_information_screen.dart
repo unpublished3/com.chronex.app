@@ -68,14 +68,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Center(
-                  child: Container(
-                    width: 90.w,
-                    height: 90.h,
-                    decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(50)),
-                    child: Icon(CupertinoIcons.person, color: AppColor.white, size: 50.sp),
-                  ),
-                ),
+                buildProfileWidget(),
                 Text('Personal Information', style: STextTheme.text22.copyWith(fontWeight: FontWeight.w400)),
                 LabelInputGroupWidget(
                   keyboardType: TextInputType.name,
@@ -175,4 +168,15 @@ class _PersonalInformationState extends State<PersonalInformation> {
       ),
     );
   }
+}
+
+Center buildProfileWidget({Color bgColor = AppColor.primary}) {
+  return Center(
+    child: Container(
+      width: 90.w,
+      height: 90.h,
+      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(50)),
+      child: Icon(CupertinoIcons.person, color: AppColor.white, size: 50.sp),
+    ),
+  );
 }

@@ -1,4 +1,6 @@
 import 'package:chronex/base/extensions/sizedbox_extension.dart';
+import 'package:chronex/navigation/app_router_path.dart';
+import 'package:chronex/presentation/onboard/personal_information_screen.dart';
 import 'package:chronex/presentation/provider/home_stats_provider.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/presentation/widgets/app_text_field.dart';
@@ -8,6 +10,7 @@ import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -77,117 +80,75 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homePageStatsProvider);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          20.sBHh,
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
+            child: Column(
+              children: [
+                buildProfileWidget(bgColor: AppColor.black.withAlpha(100)),
+                4.sBHh,
+                Text(
+                  name ?? 'Runner',
+                  style: STextTheme.text24.copyWith(color: AppColor.white, fontWeight: FontWeight.w600),
+                ),
+                5.sBHh,
+                Text(
+                  '${state.totalRuns.toString()} runs . ${state.totalDistance.toString()} km total',
+                  style: STextTheme.text16.copyWith(color: AppColor.white, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
+          ),
+          16.sBHh,
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
+            child: Column(
+              spacing: 16.h,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Personal Information', style: STextTheme.text20),
+                0.sBHh,
+                buildRow(icon: Icons.straighten, label: 'Height(cm)', controller: _heightController),
+                buildRow(icon: Icons.monitor_weight_outlined, label: 'Weight(kg)', controller: _weightController),
+                buildRow(icon: Icons.date_range, label: 'Age', controller: _ageController),
+                buildRow(
+                  icon: Icons.male,
+                  label: 'Gender',
+                  controller: TextEditingController(text: gender ?? ''),
+                  readOonly: true,
+                ),
+                AppButton(
+                  onPressed: () {
+                    context.push(AppRouterPath.initial);
+                  },
+                  title: '    Save    ',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildRow({required IconData icon, required String label, required TextEditingController controller, bool readOonly = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        20.sBHh,
-        Container(
-          width: 350.w,
-          height: 220.h,
-          decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            children: [
-              10.sBHh,
-              Container(
-                width: 90.w,
-                height: 90.h,
-                decoration: BoxDecoration(color: AppColor.green.withAlpha(50), borderRadius: BorderRadius.circular(50)),
-                child: const Icon(Icons.person, color: AppColor.white, size: 50),
-              ),
-              Text(name ?? 'Runner', style: STextTheme.text36.copyWith(color: AppColor.white)),
-              5.sBHh,
-              Text('${state.totalRuns.toString()} runs . ${state.totalDistance.toString()} km total', style: STextTheme.text24.copyWith(color: AppColor.white)),
-            ],
-          ),
-        ),
-        10.sBHh,
-        Container(
-          width: 350.w,
-          height: 380.h,
-          decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(16.sp),
-                child: Text('Personal Information', style: STextTheme.text22),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  16.sBWw,
-                  const CircularIcons(icon: Icons.straighten),
-                  8.sBWw,
-                  Text('Height(cm)', style: STextTheme.text20.copyWith(color: AppColor.primary)),
-                  5.sBWw,
-                  PreloadedTextField(controller: _heightController),
-                ],
-              ),
-              10.sBHh,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  16.sBWw,
-                  const CircularIcons(icon: Icons.monitor_weight_outlined),
-                  8.sBWw,
-                  Text('weight(kg)', style: STextTheme.text20.copyWith(color: AppColor.primary)),
-                  10.sBWw,
-                  PreloadedTextField(controller: _weightController),
-                ],
-              ),
-              10.sBHh,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  16.sBWw,
-                  const CircularIcons(icon: Icons.date_range),
-                  8.sBWw,
-                  Text('Age', style: STextTheme.text20.copyWith(color: AppColor.primary)),
-                  70.sBWw,
-                  PreloadedTextField(controller: _ageController),
-                ],
-              ),
-              10.sBHh,
-              if (gender == 'Male')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    16.sBWw,
-                    const CircularIcons(icon: Icons.male),
-                    8.sBWw,
-                    Text('Gender', style: STextTheme.text20.copyWith(color: AppColor.primary)),
-                    39.sBWw,
-                    PreloadedDisabledTextFields(gender: gender ?? "Male"),
-                  ],
-                ),
-              if (gender == 'Female')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    16.sBWw,
-                    const CircularIcons(icon: Icons.female),
-                    8.sBWw,
-                    Text('Gender', style: STextTheme.text20.copyWith(color: AppColor.primary)),
-                    12.sBWw,
-                    PreloadedDisabledTextFields(gender: gender ?? "Female"),
-                  ],
-                ),
-              10.sBHh,
-              Padding(
-                padding: EdgeInsets.only(left: 16.sp),
-                child: AppButton(
-                  // onPressed: _updateProfile, // add validation to make sure parse() works
-                  onPressed: () {},
-                  title: 'save',
-                  titleColor: AppColor.white,
-                  color: AppColor.primary,
-                  height: 50.h,
-                  width: 120.w,
-                  fontSize: 20.0,
-                ),
-              ),
-            ],
-          ),
+        CircularIcons(icon: icon),
+        12.sBWw,
+        Text(label, style: STextTheme.text16.copyWith(color: AppColor.primary)),
+        const Spacer(),
+        SizedBox(
+          width: 100.w,
+          child: AppTextField(controller: controller, readOnly: readOonly),
         ),
       ],
     );
@@ -205,49 +166,6 @@ class CircularIcons extends StatelessWidget {
       width: 50.w,
       decoration: BoxDecoration(color: AppColor.green, borderRadius: BorderRadius.circular(50)),
       child: Icon(icon, color: AppColor.primary),
-    );
-  }
-}
-
-class PreloadedTextField extends StatefulWidget {
-  final TextEditingController controller;
-  const PreloadedTextField({super.key, required this.controller});
-
-  @override
-  State<PreloadedTextField> createState() => _PreloadedTextFieldState();
-}
-
-class _PreloadedTextFieldState extends State<PreloadedTextField> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 95.w,
-      child: AppTextField(controller: widget.controller, height: 50.h, keyboardType: TextInputType.number, style: STextTheme.text20),
-    );
-  }
-}
-
-class PreloadedDisabledTextFields extends StatelessWidget {
-  final String gender;
-  const PreloadedDisabledTextFields({super.key, required this.gender});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 95.w,
-      height: 50.h,
-      child: TextFormField(
-        initialValue: gender,
-        readOnly: true,
-        enabled: false,
-        style: STextTheme.text20,
-        decoration: InputDecoration(
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
     );
   }
 }
