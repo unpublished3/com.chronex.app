@@ -3,6 +3,7 @@ import 'package:chronex/model/user_profile.dart';
 import 'package:chronex/navigation/app_router_path.dart';
 import 'package:chronex/presentation/widgets/app_button.dart';
 import 'package:chronex/storage/hive_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/app_color.dart';
@@ -53,185 +54,122 @@ class _PersonalInformationState extends State<PersonalInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColor.primary,
       body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            width: 350.w,
-            height: 625.h,
-            decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
-            child: Form(
-              key: _formGlobalKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
+        child: Container(
+          margin: EdgeInsets.all(24.w),
+          padding: EdgeInsets.all(24.w),
+          decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
+          child: Form(
+            key: _formGlobalKey,
+            child: Column(
+              spacing: 12.h,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Container(
                     width: 90.w,
                     height: 90.h,
                     decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(50)),
-                    child: const Icon(Icons.person, color: AppColor.white, size: 50),
+                    child: Icon(CupertinoIcons.person, color: AppColor.white, size: 50.sp),
                   ),
-                  Text('Personal Information', style: STextTheme.text30),
-                  Text('Help us personalize your experience', style: STextTheme.text18),
-                  SizedBox(
-                    width: 300.w,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text('Name', style: STextTheme.text20),
-                        ),
-                        5.sBHh,
-                        AppTextField(
-                          keyboardType: TextInputType.name,
-                          labelText: 'Enter your name',
-                          height: 50.0,
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
+                ),
+                Text('Personal Information', style: STextTheme.text22.copyWith(fontWeight: FontWeight.w400)),
+                LabelInputGroupWidget(
+                  keyboardType: TextInputType.name,
+                  label: "Name",
+                  hintText: "Enter your name",
+                  controller: _nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Name is required';
+                    }
+                    return null;
+                  },
+                ),
+                LabelInputGroupWidget(
+                  keyboardType: TextInputType.number,
+                  label: "Height",
+                  hintText: "Enter your height",
+                  controller: _heightController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Height is required';
+                    }
+                    return null;
+                  },
+                ),
+                LabelInputGroupWidget(
+                  label: "Weight",
+                  hintText: "Enter your weight",
+                  controller: _weightController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Weight is required';
+                    }
+                    return null;
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: LabelInputGroupWidget(controller: _ageController, label: "Age", hintText: "Enter your age"),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 120.w,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Height (cm)', style: STextTheme.text20),
-                            ),
-                            5.sBHh,
-                            AppTextField(
-                              controller: _heightController,
-                              height: 50.0,
-                              labelText: 'Height',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Required';
-                                }
-                                return null;
-                              },
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
-                        ),
+                    12.sBWw,
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('Gender', style: STextTheme.text20),
+                          5.sBHh,
+                          DropdownButtonFormField<String>(
+                            items: genderOption.map((item) {
+                              return DropdownMenuItem<String>(value: item, child: Text(item));
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                gender = value?.trim();
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 120.w,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Weight (kg)', style: STextTheme.text20),
-                            ),
-                            5.sBHh,
-                            AppTextField(
-                              controller: _weightController,
-                              height: 50.0,
-                              labelText: 'Weight',
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
+                    ),
+                  ],
+                ),
+                2.sBHh,
+                AppButton(
+                  onPressed: () async {
+                    if (!_formGlobalKey.currentState!.validate()) return;
+
+                    await HiveManager('profileBox').write(
+                      'user',
+                      UserProfile(
+                        name: _nameController.text.trim(),
+                        age: int.parse(_ageController.text.trim()),
+                        height: double.parse(_heightController.text.trim()),
+                        weight: double.parse(_weightController.text.trim()),
+                        gender: gender!,
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 120.w,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Age', style: STextTheme.text20),
-                            ),
-                            5.sBHh,
-                            AppTextField(
-                              controller: _ageController,
-                              height: 50.0,
-                              labelText: 'Age',
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 120.w,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Gender', style: STextTheme.text20),
-                            ),
-                            5.sBHh,
-                            DropdownButtonFormField<String>(
-                              items: genderOption.map((item) {
-                                return DropdownMenuItem<String>(value: item, child: Text(item));
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value?.trim();
-                                });
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  AppButton(
-                    onPressed: () async {
-                      _formGlobalKey.currentState!.validate();
-                      await HiveManager('profileBox').write(
-                        'user',
-                        UserProfile(
-                          name: _nameController.text.trim(),
-                          age: int.parse(_ageController.text.trim()),
-                          height: double.parse(_heightController.text.trim()),
-                          weight: double.parse(_weightController.text.trim()),
-                          gender: gender!,
-                        ),
-                      );
-                      showSnackBar("Profile saved successfully");
-                      if (context.mounted) {
-                        context.go(AppRouterPath.home);
-                      }
-                    },
-                    title: 'Continue',
-                    height: 50.h,
-                    width: 300.w,
-                    // borderRadius: 16,
-                  ),
-                ],
-              ),
+                    );
+                    showSnackBar("Profile saved successfully");
+                    if (context.mounted) {
+                      context.go(AppRouterPath.home);
+                    }
+                  },
+                  title: 'Continue',
+                  width: double.infinity,
+                  // borderRadius: 16,
+                ),
+              ],
             ),
           ),
         ),
