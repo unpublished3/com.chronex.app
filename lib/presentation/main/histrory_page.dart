@@ -30,26 +30,23 @@ class _HistoryPageState extends ConsumerState<HistroryPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        16.sBHh,
         Container(
-          margin: const EdgeInsets.all(25.0),
-          height: 120.h,
-          width: 370.w,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: const Color.fromARGB(255, 197, 254, 198)),
+          width: double.infinity,
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: const Color(0xFF9BF7AC)),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.all(12.h),
-                child: Row(
-                  children: [
-                    const Icon(Icons.directions_run, color: AppColor.primary, size: 25.0),
-                    5.sBHw,
-                    Text('Total Runs: ${stats.totalRuns.toString()}', style: STextTheme.text24.copyWith(color: AppColor.primary)),
-                  ],
-                ),
+              Row(
+                children: [
+                  Icon(Icons.directions_run, color: AppColor.primary, size: 24.sp),
+                  8.sBWw,
+                  Text('Total Runs: ${stats.totalRuns.toString()}', style: STextTheme.text20.copyWith(color: AppColor.primary)),
+                ],
               ),
-              Center(
-                child: Text('Keep up the great work! Every run counts.', style: STextTheme.text18.copyWith(color: AppColor.primary)),
-              ),
+              12.sBHh,
+              Text('Keep up the great work! Every run counts.', style: STextTheme.text16.copyWith(color: AppColor.primary)),
             ],
           ),
         ),
