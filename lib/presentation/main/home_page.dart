@@ -9,6 +9,7 @@ import 'package:chronex/presentation/widgets/recent_run_stats.dart';
 import 'package:chronex/base/theme/app_color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:chronex/presentation/widgets/home_page_stats.dart';
 
@@ -42,85 +43,73 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final stats = ref.watch(homePageStatsProvider);
     final runs = ref.watch(recentRunsProvider);
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(24.sp),
-          decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
-          margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(24.sp),
+            decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(16)),
+            margin: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Welcome Back, $name!', style: STextTheme.text26.copyWith(color: AppColor.white)),
+                8.sBHh,
+                Text('Ready for your next Run?', style: STextTheme.text18.copyWith(color: AppColor.white)),
+                16.sBHh,
+                AppButton(
+                  onPressed: () {
+                    // route to active run track play
+                  },
+                  title: 'Start New Run',
+                  leadingIcon: const Icon(Icons.play_arrow, color: AppColor.primary, size: 25.0),
+                  color: Colors.grey.shade100,
+                  titleColor: AppColor.primary,
+                  width: double.infinity,
+                  height: 60.h,
+                ),
+              ],
+            ),
+          ),
+          Text('Your Stats', style: STextTheme.text18),
+          12.sBHh,
+          Row(
+            spacing: 12.w,
             children: [
-              Text('Welcome Back, $name!', style: STextTheme.text26.copyWith(color: AppColor.white)),
-              8.sBHh,
-              Text('Ready for your next Run?', style: STextTheme.text18.copyWith(color: AppColor.white)),
-              16.sBHh,
-              AppButton(
-                onPressed: () {
-                  // route to active run track play
+              HomePageStats(icon: Icons.directions_run, title: 'Total Runs', value: stats.totalRuns.toString()),
+              HomePageStats(icon: Icons.location_on, title: 'Distance', value: stats.totalDistance.toStringAsFixed(2), unit: 'km'),
+            ],
+          ),
+          12.sBHh,
+          Row(
+            spacing: 12.w,
+            children: [
+              HomePageStats(
+                icon: Icons.timer,
+                title: 'Total Time',
+                value: '${stats.totalTime.inHours.toString().padLeft(2, '0')}:${stats.totalTime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
+                unit: 'm',
+              ),
+              HomePageStats(icon: Icons.bolt, title: 'Avg Pace', value: stats.avgPace.toString(), unit: 'm/km'),
+            ],
+          ),
+          25.sBHh,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Recent activity', style: STextTheme.text18),
+              GestureDetector(
+                onTap: () {
+                  StatefulNavigationShell.of(context).goBranch(3);
                 },
-                title: 'Start New Run',
-                leadingIcon: const Icon(Icons.play_arrow, color: AppColor.primary, size: 25.0),
-                color: Colors.grey.shade100,
-                titleColor: AppColor.primary,
-                width: double.infinity,
-                height: 60.h,
+                child: Text('View all', style: STextTheme.text18.copyWith(color: AppColor.primary)),
               ),
             ],
           ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.all(12.h),
-            child: Text('Your Stats', style: STextTheme.text24),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            HomePageStats(icon: Icons.directions_run, title: 'Total Runs', value: stats.totalRuns.toString()),
-            HomePageStats(icon: Icons.location_on, title: 'Distance', value: stats.totalDistance.toStringAsFixed(2), unit: 'km'),
-          ],
-        ),
-        25.sBHh,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            HomePageStats(
-              icon: Icons.timer,
-              title: 'Total Time',
-              value: '${stats.totalTime.inHours.toString().padLeft(2, '0')}:${stats.totalTime.inMinutes.remainder(60).toString().padLeft(2, '0')}',
-              unit: 'm',
-            ),
-            HomePageStats(icon: Icons.bolt, title: 'Avg Pace', value: stats.avgPace.toString(), unit: 'm/km'),
-          ],
-        ),
-        25.sBHh,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 12.sp),
-              child: Text('Recent activity', style: STextTheme.text24),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 12.sp),
-              child: GestureDetector(
-                onTap: () {
-                  // move to history page
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 10.0),
-                  child: Text('View all', style: STextTheme.text24.copyWith(color: AppColor.primary)),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Expanded(
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
             itemCount: runs.length,
             itemBuilder: (context, index) {
               final run = runs[index];
@@ -138,8 +127,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               );
             },
           ),
-        ),
-      ],
+          24.sBHh,
+        ],
+      ),
     );
   }
 }
