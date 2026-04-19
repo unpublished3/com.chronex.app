@@ -25,9 +25,9 @@ class HomePageStatsManager {
     int paceSum = 0;
 
     for (final run in runs) {
-      totalDistance += run.distance;
-      totalSeconds += run.timeSec;
-      paceSum += run.avgSecondsPerKm;
+      totalDistance += run.distance ?? 0;
+      totalSeconds += run.timeSec ?? 0;
+      paceSum += run.avgSecondsPerKm ?? 0;
     }
     return RunStats(
       totalRuns: runs.length,

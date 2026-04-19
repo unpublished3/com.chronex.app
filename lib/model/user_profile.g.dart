@@ -17,11 +17,11 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserProfile(
-      name: fields[0] as String,
-      age: fields[1] as int,
-      height: fields[2] as double,
-      weight: fields[3] as double,
-      gender: fields[4] as String,
+      name: fields[0] as String?,
+      age: fields[1] as int?,
+      height: fields[2] as double?,
+      weight: fields[3] as double?,
+      gender: fields[4] as String?,
     );
   }
 

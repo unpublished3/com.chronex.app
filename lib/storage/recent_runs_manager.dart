@@ -9,12 +9,8 @@ class RecentRunsManager {
   final HiveManager _hiveManager = HiveManager('runBox');
 
   Future<List<RecentRuns>> _getSortedRuns() async {
-    final List<RecentRuns> runs = (await _hiveManager.readAll())
-        .whereType<Run>()
-        .map(RecentRuns.fromRun)
-        .toList();
-    final sortedRuns = [...runs]
-      ..sort((a, b) => b.completionDate.compareTo(a.completionDate));
+    final List<RecentRuns> runs = (await _hiveManager.readAll()).whereType<Run>().map(RecentRuns.fromRun).toList();
+    final sortedRuns = [...runs]..sort((a, b) => b.completionDate?.compareTo(a.completionDate ?? DateTime.now()) ?? 0);
     return sortedRuns;
   }
 

@@ -5,11 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class STextTheme {
   STextTheme._();
 
-  static const TextStyle baseText = TextStyle(
-    fontFamily: "Roboto",
-    color: AppColor.black,
-    fontWeight: FontWeight.w500,
-  );
+  static const TextStyle baseText = TextStyle(fontFamily: "Inter", color: AppColor.black, fontWeight: FontWeight.w300);
   static TextStyle text60 = baseText.copyWith(fontSize: 60.sp);
   static TextStyle text45 = baseText.copyWith(fontSize: 45.sp);
   static TextStyle text30 = baseText.copyWith(fontSize: 30.sp);
