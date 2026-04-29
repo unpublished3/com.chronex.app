@@ -34,6 +34,7 @@ target 'Runner' do
   target 'RunnerTests' do
     inherit! :search_paths
   end
+  pod 'CoreBluetoothMock'
 end
 
 post_install do |installer|

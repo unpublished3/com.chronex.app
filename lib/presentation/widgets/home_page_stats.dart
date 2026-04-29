@@ -1,3 +1,4 @@
+import 'package:chronex/base/extensions/sizedbox_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:chronex/base/theme/s_text_theme.dart';
 import 'package:chronex/base/theme/app_color.dart';
@@ -8,13 +9,7 @@ class HomePageStats extends StatefulWidget {
   final String title;
   final String value;
   final String? unit;
-  const HomePageStats({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.value,
-    this.unit,
-  });
+  const HomePageStats({super.key, required this.icon, required this.title, required this.value, this.unit});
 
   @override
   State<HomePageStats> createState() => _HomePageStatsState();
@@ -23,38 +18,37 @@ class HomePageStats extends StatefulWidget {
 class _HomePageStatsState extends State<HomePageStats> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 110.h,
-      width: 165.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppColor.white,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 8.0),
-            child: Row(
+    return Expanded(
+      child: Container(
+        height: 110.h,
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: AppColor.white,
+          shape: BoxShape.rectangle,
+          boxShadow: [BoxShadow(color: AppColor.black.withValues(alpha: 0.1), blurRadius: 8, offset: const Offset(0, 4))],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
               children: [
-                Icon(widget.icon, color: AppColor.primary, size: 25.0),
-                Text(widget.title, style: STextTheme.text20),
+                Icon(widget.icon, color: AppColor.primary, size: 24.sp),
+                4.sBWh,
+                Text(widget.title, style: STextTheme.text16),
               ],
             ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0, 5.0, 0),
-                child: Align(
+            Row(
+              children: [
+                Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(widget.value, style: STextTheme.text24),
+                  child: Text(widget.value, style: STextTheme.text18),
                 ),
-              ),
-              if (widget.unit != null)
-                Text(widget.unit ?? '', style: STextTheme.text24),
-            ],
-          ),
-        ],
+                if (widget.unit != null) Text(" ${widget.unit!}", style: STextTheme.text18),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
